@@ -1,0 +1,25 @@
+{
+  "name": "huitparfait-api",
+  "version": "0.0.1",
+  "description": "huitparfait-api",
+  "author": "Huit Parfait Team",
+  "private": true,
+  "repository": {
+    "type": "git",
+    "url": "git@github.com:huitparfait/huitparfait-api.git"
+  },
+  "engines": {
+    "node": "10.2.1"
+  },
+  "scripts": {
+    "dev": "nodemon --watch src --watch config src/server.js",
+    "start": "node src/server.js"
+  },
+  "dependencies": {
+    "convict": "4.2.0",
+    "hapi": "17.5.0"
+  },
+  "devDependencies": {
+    "nodemon": "1.17.5"
+  }
+}
