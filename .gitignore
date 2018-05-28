@@ -10,3 +10,6 @@ node_modules
 *.swp
 
 *.log
+
+# Clever Cloud
+.clever.json
