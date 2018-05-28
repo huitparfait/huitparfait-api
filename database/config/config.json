@@ -1,0 +1,9 @@
+{
+  "development": {
+    "username": "huitparfait-db",
+    "password": "huitparfait-db",
+    "database": "huitparfait-db",
+    "host": "127.0.0.1",
+    "dialect": "postgres"
+  }
+}
