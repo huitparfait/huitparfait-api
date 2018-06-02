@@ -1,0 +1,8 @@
+{
+  "NODE_ENV": "development",
+  "DATABASE_HOST": "localhost",
+  "DATABASE_PORT": 5432,
+  "DATABASE_USER": "huitparfait-db",
+  "DATABASE_PASSWORD": "huitparfait-db",
+  "DATABASE_NAME": "huitparfait-db"
+}

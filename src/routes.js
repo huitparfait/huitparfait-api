@@ -10,11 +10,4 @@ module.exports = [
       return 'OK';
     },
   },
-  {
-    method: 'GET',
-    path: '/api/ping',
-    handler: function () {
-      return 'pong!';
-    },
-  },
 ];

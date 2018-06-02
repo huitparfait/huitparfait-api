@@ -2,6 +2,7 @@
 
 const Hapi = require('hapi');
 const routes = require('./routes');
+const userRoutes = require('./users/users.routes.js');
 const config = require('./config/config.js');
 
 async function createServer () {
@@ -9,6 +10,7 @@ async function createServer () {
     port: config.get('PORT'),
   });
   server.route(routes);
+  server.route(userRoutes);
   return server;
 };
 

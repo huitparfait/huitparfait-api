@@ -9,12 +9,6 @@ test('GET /', async () => {
   expect(response.status).toEqual(200);
 });
 
-test('GET /api/ping', async () => {
-  const response = await server.get('/api/ping');
-  expect(response.status).toEqual(200);
-  expect(response.text).toEqual('pong!');
-});
-
 beforeAll(async () => {
   const hapiServer = await createServer();
   server = request(hapiServer.listener);
