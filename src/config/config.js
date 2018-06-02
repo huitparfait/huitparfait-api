@@ -45,6 +45,18 @@ const conf = convict({
     default: "",
     env: 'DATABASE_NAME',
   },
+  JWT_PUBLIC_KEY: {
+    doc: 'The RS512 public key to verify the JWT signature',
+    format: String,
+    default: "",
+    env: 'JWT_PUBLIC_KEY',
+  },
+  JWT_TEST_PRIVATE_KEY: {
+    doc: 'The RS512 private key to sign JWT tokens. Used for development and testing only',
+    format: String,
+    default: "",
+    env: 'JWT_TEST_PRIVATE_KEY',
+  },
 });
 
 if (conf.get('NODE_ENV') === 'development') {
