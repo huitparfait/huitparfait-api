@@ -12,8 +12,10 @@
     "node": "10.2.1"
   },
   "scripts": {
-    "dev": "nodemon --watch src --watch config src/server.js",
-    "start": "node src/server.js",
+    "dev": "nodemon --watch src --watch config src/start-app.js",
+    "start": "node src/start-app.js",
+    "e2e": "NODE_ENV=e2e jest -c ./e2e.jest.config.js",
+    "e2e:watch": "NODE_ENV=e2e jest -c ./e2e.jest.config.js --watch",
     "db:migrate": "sequelize db:migrate",
     "db:seed": "sequelize db:seed:all",
     "db:migrate:undo:all": "sequelize db:migrate:undo:all",
@@ -27,6 +29,8 @@
     "sequelize-cli": "4.0.0"
   },
   "devDependencies": {
-    "nodemon": "1.17.5"
+    "jest": "23.1.0",
+    "nodemon": "1.17.5",
+    "supertest": "3.1.0"
   }
 }
