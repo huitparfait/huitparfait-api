@@ -1,0 +1,5 @@
+= database
+
+Run a local postgres in Docker
+
+./pg-start.sh

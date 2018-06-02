@@ -13,11 +13,18 @@
   },
   "scripts": {
     "dev": "nodemon --watch src --watch config src/server.js",
-    "start": "node src/server.js"
+    "start": "node src/server.js",
+    "db:migrate": "sequelize db:migrate",
+    "db:seed": "sequelize db:seed:all",
+    "db:migrate:undo:all": "sequelize db:migrate:undo:all",
+    "db:reset": "npm run db:migrate:undo:all && npm run db:migrate && npm run db:seed"
   },
   "dependencies": {
     "convict": "4.2.0",
-    "hapi": "17.5.0"
+    "hapi": "17.5.0",
+    "pg": "7.4.3",
+    "sequelize": "4.37.10",
+    "sequelize-cli": "4.0.0"
   },
   "devDependencies": {
     "nodemon": "1.17.5"
