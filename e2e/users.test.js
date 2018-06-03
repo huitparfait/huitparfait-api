@@ -3,7 +3,19 @@
 const request = require('supertest');
 const { createServer } = require('../src/server');
 const auth = require('./auth/auth');
+const database = require('./database/database');
 let server;
+
+describe('User creation', () => {
+
+  beforeEach(() => {
+    database.reset();
+  });
+
+  test('TODO user creation', () => {
+  });
+
+});
 
 test('GET /api/users/me', async () => {
 
