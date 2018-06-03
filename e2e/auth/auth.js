@@ -9,8 +9,14 @@ async function sign(token) {
   return jwt.sign(token, JWT_TEST_PRIVATE_KEY, { algorithm: 'RS512' });
 }
 
-let johnsToken;
+let anonymousToken;
+async function getAnonymousToken() {
+  // Anonymous token (for user creation for instance)
+  anonymousToken = anonymousToken || sign({ anonymous: true });
+  return anonymousToken;
+}
 
+let johnsToken;
 async function getJohnsToken() {
   // Token for john Lennon (from the test data set)
   johnsToken = johnsToken || sign({ id: '15c336ea-091b-425a-a99b-190179623ad4' });
@@ -18,5 +24,6 @@ async function getJohnsToken() {
 }
 
 module.exports = {
+  getAnonymousToken,
   getJohnsToken,
 };

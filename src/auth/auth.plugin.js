@@ -15,6 +15,10 @@ function validate(decoded) {
   return { isValid: false };
 };
 
+function validateAnonymous() {
+  return { isValid: true };
+};
+
 module.exports = {
   name: 'huitparfaitAuth',
   register: async function (server) {
@@ -24,6 +28,12 @@ module.exports = {
     server.auth.strategy('jwt', 'jwt', {
       key: config.get('JWT_PUBLIC_KEY'),
       validate: validate,
+      verifyOptions: { algorithms: ['RS512'] }
+    });
+
+    server.auth.strategy('jwt-anonymous', 'jwt', {
+      key: config.get('JWT_PUBLIC_KEY'),
+      validate: validateAnonymous,
       verifyOptions: { algorithms: ['RS512'] }
     });
 

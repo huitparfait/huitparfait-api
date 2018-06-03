@@ -2,6 +2,31 @@
 
 const sql = require('sql-tag');
 const database = require('../database-pool');
+const generateAnonymousName = require('./anonymous-name-generator');
+
+
+// Creates a new user or just update his/her last_connection_at date
+// Used during login phase
+function connectUser({ name, oauthHash, avatarUrl }) {
+
+  const sqlQuery = sql`
+    INSERT INTO Public.hp_user (name, anonymous_name, oauth_hash, avatar_url)
+    VALUES (${name}, ${generateAnonymousName()}, ${oauthHash}, ${avatarUrl})
+    ON CONFLICT (oauth_hash)
+    DO UPDATE
+    SET
+        updated_at = now(),
+        last_connection_at = now()
+    RETURNING
+        id,
+        name,
+        anonymous_name,
+        avatar_url,
+        is_anonymous
+`;
+
+  return database.one(sqlQuery);
+}
 
 
 // Reads user details
@@ -55,6 +80,7 @@ function getUserGroups(userId) {
 
 
 module.exports = {
+  connectUser,
   getUser,
   getUserGroups,
 };

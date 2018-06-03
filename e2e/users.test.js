@@ -6,15 +6,49 @@ const auth = require('./auth/auth');
 const database = require('./database/database');
 let server;
 
-describe('User creation', () => {
 
-  beforeEach(() => {
-    database.reset();
-  });
+test('POST /api/users/me', async () => {
 
-  test('TODO user creation', () => {
-  });
+  // Reset the DB to avoid weird results
+  await database.reset();
 
+  // Will be used to check that the name does not change during update
+  let anonymousName;
+
+  // Make a first call (creation after first login)
+  let response = await server
+    .post('/api/users/me')
+    .send({
+      oauthHash: 'testHash',
+      name: 'Kurt Cobain',
+      avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Nirvana_around_1992.jpg',
+    })
+    .set('Authorization', `Bearer ${await auth.getAnonymousToken()}`);
+
+  expect(response.status).toEqual(200);
+  expect(response.body.id).toHaveLength(36); // a UUID
+  expect(response.body.name).toEqual('Kurt Cobain');
+  expect(response.body.anonymousName.split(' ').length).toBeGreaterThan(1); // Anonymous name should be in two words or more
+  expect(response.body.avatarUrl).toEqual('https://upload.wikimedia.org/wikipedia/commons/1/19/Nirvana_around_1992.jpg');
+  expect(response.body.isAnonymous).toEqual(true);
+
+  anonymousName = response.body.anonymousName;
+
+  // Make a second call (second login)
+  response = await server
+    .post('/api/users/me')
+    .send({
+      oauthHash: 'testHash',
+      name: 'Wrong Name',
+      avatarUrl: 'https://wrong.image.location',
+    })
+    .set('Authorization', `Bearer ${await auth.getAnonymousToken()}`);
+
+  expect(response.status).toEqual(200);
+  expect(response.body.name).toEqual('Kurt Cobain'); // Should not have changed
+  expect(response.body.anonymousName).toEqual(anonymousName); // Should not have changed after update!
+  expect(response.body.avatarUrl).toEqual('https://upload.wikimedia.org/wikipedia/commons/1/19/Nirvana_around_1992.jpg'); // Should not have changed
+  expect(response.body.isAnonymous).toEqual(true);
 });
 
 test('GET /api/users/me', async () => {
