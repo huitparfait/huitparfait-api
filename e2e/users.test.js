@@ -67,6 +67,27 @@ test('GET /api/users/me', async () => {
   });
 });
 
+test('PUT /api/users/me', async () => {
+
+  // Reset the DB to avoid weird results
+  await database.reset();
+
+  let response = await server
+    .put('/api/users/me')
+    .send({
+      name: 'Jon Lemon',
+      avatarUrl: 'https://new.jons.avatar.location',
+      isAnonymous: false,
+    })
+    .set('Authorization', `Bearer ${await auth.getJohnsToken()}`);
+
+  expect(response.status).toEqual(200);
+  expect(response.body.name).toEqual('Jon Lemon');
+  expect(response.body.anonymousName).toEqual('John L.'); // Anonymous name should be in two words or more
+  expect(response.body.avatarUrl).toEqual('https://new.jons.avatar.location');
+  expect(response.body.isAnonymous).toEqual(false);
+});
+
 test('GET /api/users/me/groups', async () => {
 
   const response = await server

@@ -49,6 +49,34 @@ function getUser(id) {
   return database.one(sqlQuery);
 }
 
+
+// Updates user details
+// Used in edit profile page
+// Returns the edited user
+function updateUser ({ id, name, avatarUrl, isAnonymous }) {
+
+  const sqlQuery = sql`
+      UPDATE
+          Public.hp_user
+      SET
+          updated_at = now(),
+          name = ${name},
+          avatar_url = ${avatarUrl},
+          is_anonymous = ${isAnonymous}
+      WHERE
+          id = ${id}
+      RETURNING
+          id,
+          name,
+          anonymous_name,
+          avatar_url,
+          is_anonymous
+`;
+
+  return database.one(sqlQuery);
+}
+
+
 // Reads a user's groups (in which s.he's active)
 // Returns active users count for each group
 function getUserGroups(userId) {
@@ -82,5 +110,6 @@ function getUserGroups(userId) {
 module.exports = {
   connectUser,
   getUser,
+  updateUser,
   getUserGroups,
 };

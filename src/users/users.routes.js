@@ -37,6 +37,29 @@ module.exports = [
   },
 
   {
+    method: 'PUT',
+    path: '/api/users/me',
+    config: {
+      auth: 'jwt',
+      validate: {
+        payload: Joi.object({
+          name: Joi.string(),
+          avatarUrl: Joi.string().uri({ scheme: 'https' }),
+          isAnonymous: Joi.boolean(),
+        }).required(),
+      }
+    },
+    handler: function (request) {
+      return userService.updateUser({
+        id: request.auth.credentials.id,
+        name: request.payload.name,
+        avatarUrl: request.payload.avatarUrl,
+        isAnonymous: request.payload.isAnonymous,
+      });
+    },
+  },
+
+  {
     method: 'GET',
     path: '/api/users/me/groups',
     handler: function (request) {
