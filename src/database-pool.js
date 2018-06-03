@@ -1,7 +1,10 @@
 'use strict';
 
 const _ = require('lodash');
-const { Pool } = require('pg');
+const pg = require('pg');
+// Fix for parsing of numeric fields
+pg.types.setTypeParser(20, 'text', parseFloat);
+
 const config = require('./config/config');
 
 const DATABASE_NAME = config.get('DATABASE_NAME');
@@ -10,7 +13,7 @@ const DATABASE_PASSWORD = config.get('DATABASE_PASSWORD');
 const DATABASE_HOST = config.get('DATABASE_HOST');
 const DATABASE_PORT = config.get('DATABASE_PORT');
 
-const pool = new Pool({
+const pool = new pg.Pool({
   database: DATABASE_NAME,
   user: DATABASE_USER,
   host: DATABASE_HOST,
