@@ -7,6 +7,7 @@ module.exports = {
     'arrow-parens': ['error', 'always'],
     'brace-style': ['error', 'stroustrup'],
     'comma-dangle': ['error', 'always-multiline'],
+    'line-comment-position': ['error', { 'position': 'above' }],
     'padded-blocks': 'off',
     'semi': ['error', 'always'],
     'sort-requires/sort-requires': 'error',

@@ -20,12 +20,14 @@ test('POST /api/users/me', async () => {
       name: 'Kurt Cobain',
       avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/1/19/Nirvana_around_1992.jpg',
     })
-    .set('Authorization', `Bearer ${await auth.getAnonymousToken()}`);
+    .set('Authorization', `Bearer ${auth.getAnonymousToken()}`);
 
   expect(firstResponse.status).toEqual(200);
-  expect(firstResponse.body.id).toHaveLength(36); // a UUID
+  // a UUID
+  expect(firstResponse.body.id).toHaveLength(36);
   expect(firstResponse.body.name).toEqual('Kurt Cobain');
-  expect(firstResponse.body.anonymousName.split(' ').length).toBeGreaterThan(1); // Anonymous name should be in two words or more
+  // Anonymous name should be in two words or more
+  expect(firstResponse.body.anonymousName.split(' ').length).toBeGreaterThan(1);
   expect(firstResponse.body.avatarUrl).toEqual('https://upload.wikimedia.org/wikipedia/commons/1/19/Nirvana_around_1992.jpg');
   expect(firstResponse.body.isAnonymous).toEqual(true);
 
@@ -37,12 +39,15 @@ test('POST /api/users/me', async () => {
       name: 'Wrong Name',
       avatarUrl: 'https://wrong.image.location',
     })
-    .set('Authorization', `Bearer ${await auth.getAnonymousToken()}`);
+    .set('Authorization', `Bearer ${auth.getAnonymousToken()}`);
 
   expect(secondResponse.status).toEqual(200);
-  expect(secondResponse.body.name).toEqual('Kurt Cobain'); // Should not have changed
-  expect(secondResponse.body.anonymousName).toEqual(firstResponse.body.anonymousName); // Should not have changed after update!
-  expect(secondResponse.body.avatarUrl).toEqual('https://upload.wikimedia.org/wikipedia/commons/1/19/Nirvana_around_1992.jpg'); // Should not have changed
+  // Should not have changed
+  expect(secondResponse.body.name).toEqual('Kurt Cobain');
+  // Should not have changed after update!
+  expect(secondResponse.body.anonymousName).toEqual(firstResponse.body.anonymousName);
+  // Should not have changed
+  expect(secondResponse.body.avatarUrl).toEqual('https://upload.wikimedia.org/wikipedia/commons/1/19/Nirvana_around_1992.jpg');
   expect(secondResponse.body.isAnonymous).toEqual(true);
 });
 
@@ -50,7 +55,7 @@ test('GET /api/users/me', async () => {
 
   const response = await server
     .get('/api/users/me')
-    .set('Authorization', `Bearer ${await auth.getJohnsToken()}`);
+    .set('Authorization', `Bearer ${auth.getJohnsToken()}`);
 
   expect(response.status).toEqual(200);
   expect(response.body).toEqual({
@@ -74,11 +79,12 @@ test('PUT /api/users/me', async () => {
       avatarUrl: 'https://new.jons.avatar.location',
       isAnonymous: false,
     })
-    .set('Authorization', `Bearer ${await auth.getJohnsToken()}`);
+    .set('Authorization', `Bearer ${auth.getJohnsToken()}`);
 
   expect(response.status).toEqual(200);
   expect(response.body.name).toEqual('Jon Lemon');
-  expect(response.body.anonymousName).toEqual('John L.'); // Anonymous name should be in two words or more
+  // Anonymous name should be in two words or more
+  expect(response.body.anonymousName).toEqual('John L.');
   expect(response.body.avatarUrl).toEqual('https://new.jons.avatar.location');
   expect(response.body.isAnonymous).toEqual(false);
 });
@@ -87,7 +93,7 @@ test('GET /api/users/me/groups', async () => {
 
   const response = await server
     .get('/api/users/me/groups')
-    .set('Authorization', `Bearer ${await auth.getJohnsToken()}`);
+    .set('Authorization', `Bearer ${auth.getJohnsToken()}`);
 
   expect(response.status).toEqual(200);
   expect(response.body).toEqual([{
