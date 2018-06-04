@@ -1,9 +1,9 @@
 'use strict';
 
-const jwtAuth = require('./auth/jwt.auth');
 const config = require('./config/config');
 const Hapi = require('hapi');
-const routes = require('./routes');
+const homeRoutes = require('./home.routes');
+const jwtAuth = require('./auth/jwt.auth');
 const userRoutes = require('./users/users.routes');
 
 async function createServer () {
@@ -12,10 +12,11 @@ async function createServer () {
     port: config.get('PORT'),
   });
 
-  await server.register(jwtAuth);
-
-  server.route(routes);
-  server.route(userRoutes);
+  await server.register([
+    jwtAuth,
+    homeRoutes,
+    userRoutes,
+  ]);
 
   return server;
 };
