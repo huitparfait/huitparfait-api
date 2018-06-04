@@ -7,10 +7,9 @@ function reset () {
   return new Promise((resolve, reject) => {
     exec('npm run db:reset', null,
       (err, stdout, stderr) => {
-        err ? reject(err) : resolve({
-          stdout: stdout,
-          stderr: stderr,
-        });
+        err
+          ? reject(err)
+          : resolve({ stdout, stderr });
       });
   });
 }
