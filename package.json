@@ -14,8 +14,8 @@
   "scripts": {
     "dev": "nodemon --watch src --watch config src/start-app.js",
     "start": "node src/start-app.js",
-    "e2e": "NODE_ENV=development jest -c ./e2e.jest.config.js",
-    "e2e:watch": "NODE_ENV=development jest -c ./e2e.jest.config.js --watch",
+    "e2e": "NODE_ENV=development jest -c ./e2e.jest.config.js --runInBand",
+    "e2e:watch": "NODE_ENV=development jest -c ./e2e.jest.config.js  --runInBand --watch",
     "db:migrate": "sequelize db:migrate",
     "db:seed": "sequelize db:seed:all",
     "db:migrate:undo:all": "sequelize db:migrate:undo:all",
