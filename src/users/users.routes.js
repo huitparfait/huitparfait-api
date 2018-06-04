@@ -19,7 +19,7 @@ module.exports = [
         }).required(),
       }
     },
-    handler: function (request) {
+    handler (request) {
       return userService.connectUser({
         oauthHash: request.payload.oauthHash,
         name: request.payload.name,
@@ -31,7 +31,7 @@ module.exports = [
   {
     method: 'GET',
     path: '/api/users/me',
-    handler: function (request) {
+    handler (request) {
       return userService.getUser(request.auth.credentials.id);
     },
   },
@@ -49,7 +49,7 @@ module.exports = [
         }).required(),
       }
     },
-    handler: function (request) {
+    handler (request) {
       return userService.updateUser({
         id: request.auth.credentials.id,
         name: request.payload.name,
@@ -62,7 +62,7 @@ module.exports = [
   {
     method: 'GET',
     path: '/api/users/me/groups',
-    handler: function (request) {
+    handler (request) {
       return userService.getUserGroups(request.auth.credentials.id);
     },
   },

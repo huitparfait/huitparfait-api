@@ -18,7 +18,7 @@ function validateAnonymous() {
 
 module.exports = {
   name: 'huitparfaitAuth',
-  register: async function (server) {
+  async register (server) {
 
     await server.register(hapiAuthJwt2);
 
