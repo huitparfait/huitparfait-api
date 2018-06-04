@@ -43,7 +43,6 @@ module.exports = {
         method: 'PUT',
         path: '/api/users/me',
         config: {
-          auth: 'jwt',
           validate: {
             payload: Joi.object({
               name: Joi.string(),
