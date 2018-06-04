@@ -50,6 +50,13 @@ const conf = convict({
     default: null,
     env: 'DATABASE_NAME',
   },
+  DATABASE_POOL_MAX: {
+    doc: 'The database name',
+    format: Number,
+    required: true,
+    default: null,
+    env: 'DATABASE_POOL_MAX',
+  },
   JWT_PUBLIC_KEY: {
     doc: 'The RS512 public key to verify the JWT signature',
     format: String,

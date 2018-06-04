@@ -13,6 +13,7 @@ const pool = new pg.Pool({
   host: config.get('DATABASE_HOST'),
   password: config.get('DATABASE_PASSWORD'),
   port: config.get('DATABASE_PORT'),
+  max: config.get('DATABASE_POOL_MAX'),
 });
 
 function camelCase(user) {
