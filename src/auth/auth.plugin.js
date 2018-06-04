@@ -6,13 +6,10 @@ const config = require('../config/config');
 
 
 function validate(decoded) {
-
   // This should be enough to validate that the id is a UUID without any lib or regex involved
   const UUID_LENGTH = 36;
-  if (decoded.id.length === UUID_LENGTH) {
-    return { isValid: true };
-  }
-  return { isValid: false };
+  const isValid = (decoded.id.length === UUID_LENGTH);
+  return { isValid };
 };
 
 function validateAnonymous() {
