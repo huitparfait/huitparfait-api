@@ -8,9 +8,10 @@ const sql = require('sql-tag');
 // Used during login phase
 function connectUser ({ name, oauthHash, avatarUrl }) {
 
+  const anonymousName = generateAnonymousName();
   const sqlQuery = sql`
     INSERT INTO Public.hp_user (name, anonymous_name, oauth_hash, avatar_url)
-    VALUES (${name}, ${generateAnonymousName()}, ${oauthHash}, ${avatarUrl})
+    VALUES (${name}, ${anonymousName}, ${oauthHash}, ${avatarUrl})
     ON CONFLICT (oauth_hash)
     DO UPDATE
     SET
