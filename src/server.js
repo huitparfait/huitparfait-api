@@ -1,6 +1,7 @@
 'use strict';
 
 const config = require('./config/config');
+const groupRoutes = require('./groups/groups.routes');
 const Hapi = require('hapi');
 const homeRoutes = require('./home.routes');
 const jwtAuth = require('./auth/jwt.auth');
@@ -16,9 +17,10 @@ async function createServer () {
     jwtAuth,
     homeRoutes,
     userRoutes,
+    groupRoutes,
   ]);
 
   return server;
-};
+}
 
 module.exports = { createServer };

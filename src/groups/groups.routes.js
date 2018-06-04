@@ -1,30 +1,27 @@
 'use strict';
 
+const groupService = require('./groups.service');
 const Joi = require('joi');
-const userService = require('./users.service');
 
 module.exports = {
-  name: 'users.routes',
+  name: 'groups.routes',
   async register (server, options) {
 
     server.route([
 
       {
         method: 'POST',
-        path: '/api/users/me',
+        path: '/api/groups',
         config: {
-          auth: 'jwt-anonymous',
           validate: {
             payload: Joi.object({
-              oauthHash: Joi.string().required(),
-              name: Joi.string(),
+              name: Joi.string().required(),
               avatarUrl: Joi.string().uri({ scheme: 'https' }),
             }).required(),
           },
         },
         handler (request) {
-          return userService.connectUser({
-            oauthHash: request.payload.oauthHash,
+          return groupService.createGroup(request.auth.credentials.sub, {
             name: request.payload.name,
             avatarUrl: request.payload.avatarUrl,
           });
@@ -33,39 +30,38 @@ module.exports = {
 
       {
         method: 'GET',
-        path: '/api/users/me',
+        path: '/api/groups/{id}',
+        config: {
+          validate: {
+            params: {
+              id: Joi.string().uuid(),
+            },
+          },
+        },
         handler (request) {
-          return userService.getUser(request.auth.credentials.sub);
+          return groupService.getGroup(request.auth.credentials.sub, request.params.id);
         },
       },
 
       {
         method: 'PUT',
-        path: '/api/users/me',
+        path: '/api/groups/{id}',
         config: {
           validate: {
+            params: {
+              id: Joi.string().uuid(),
+            },
             payload: Joi.object({
-              name: Joi.string(),
+              name: Joi.string().required(),
               avatarUrl: Joi.string().uri({ scheme: 'https' }),
-              isAnonymous: Joi.boolean(),
             }).required(),
           },
         },
         handler (request) {
-          return userService.updateUser({
-            id: request.auth.credentials.sub,
+          return groupService.updateGroup(request.auth.credentials.sub, request.params.id, {
             name: request.payload.name,
             avatarUrl: request.payload.avatarUrl,
-            isAnonymous: request.payload.isAnonymous,
           });
-        },
-      },
-
-      {
-        method: 'GET',
-        path: '/api/users/me/groups',
-        handler (request) {
-          return userService.getUserGroups(request.auth.credentials.sub);
         },
       },
 
