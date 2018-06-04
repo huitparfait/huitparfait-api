@@ -1,29 +1,24 @@
 'use strict';
 
 const Hapi = require('hapi');
+
 const routes = require('./routes');
-const config = require('./config/config');
+const userRoutes = require('./users/users.routes.js');
+const authPlugin = require('./auth/auth.plugin');
 
-const server = Hapi.server({
+const config = require('./config/config.js');
+async function createServer() {
+
+  const server = Hapi.server({
     port: config.get('PORT'),
-});
+  });
 
-const init = async () => {
-    try {
-        await server.start();
+  await server.register(authPlugin);
 
-        server.route(routes);
+  server.route(routes);
+  server.route(userRoutes);
 
-        console.log(`Server running at: ${server.info.uri}`);
-    }
-    catch (e) {
-        console.log('Failed to start server', e);
-    }
+  return server;
 };
 
-process.on('unhandledRejection', (err) => {
-    console.log(err);
-    process.exit(1);
-});
-
-init();
+module.exports = { createServer };

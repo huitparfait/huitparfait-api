@@ -1,4 +1,4 @@
-= huitparfait-gateway
+= huitparfait-api
 
 REST API for huitparfait
 
