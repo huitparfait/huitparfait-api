@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -14,11 +14,11 @@ module.exports = {
           name: 'The Rolling Stones',
           avatar_url: 'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fc/Trs_20150623_milwaukee_jp_105.jpg/415px-Trs_20150623_milwaukee_jp_105.jpg',
         },
-      ]))
+      ]));
   },
 
   down: (queryInterface, Sequelize) => {
     return Promise.resolve()
-      .then(() => queryInterface.bulkDelete('hp_group'))
+      .then(() => queryInterface.bulkDelete('hp_group'));
   },
-}
+};

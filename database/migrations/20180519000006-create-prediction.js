@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-const { uuid, date, foreignKey } = require('../lib/migrations-lib')
+const { uuid, date, foreignKey } = require('../lib/migrations-lib');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -23,11 +23,11 @@ module.exports = {
         created_at: date,
         updated_at: date,
         goal: { allowNull: false, type: Sequelize.INTEGER },
-      }))
+      }));
   },
   down: (queryInterface, Sequelize) => {
     return Promise.resolve()
       .then(() => queryInterface.dropTable('hp_prediction_predicts_score_for_team'))
-      .then(() => queryInterface.dropTable('hp_prediction'))
+      .then(() => queryInterface.dropTable('hp_prediction'));
   },
-}
+};

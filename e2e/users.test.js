@@ -1,11 +1,11 @@
 'use strict';
 
-const request = require('supertest');
-const { createServer } = require('../src/server');
 const auth = require('./auth/auth');
 const database = require('./database/database');
-let server;
+const request = require('supertest');
+const { createServer } = require('../src/server');
 
+let server;
 
 test('POST /api/users/me', async () => {
 

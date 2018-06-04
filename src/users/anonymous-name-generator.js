@@ -1,7 +1,6 @@
 'use strict';
 
-
-module.exports = function generateAnonymousName(input = Math.random()) {
+module.exports = function generateAnonymousName (input = Math.random()) {
 
   const animalLength = names.animals.length;
   const adjectivesLength = names.adjectives.length;
@@ -20,7 +19,7 @@ module.exports = function generateAnonymousName(input = Math.random()) {
   return ucfirst(`${animal.name} ${adjective[animal.genre]}`);
 };
 
-function ucfirst(string) {
+function ucfirst (string) {
   return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
@@ -159,7 +158,7 @@ const names = {
     { m: 'vaillant', f: 'vaillante' },
     { m: 'valeureux', f: 'valeureuse' },
     { m: 'vigilant', f: 'vigilante' },
-    { m: 'vigoureux', f: 'vigoureuse' }
+    { m: 'vigoureux', f: 'vigoureuse' },
   ],
   'animals': [
     { name: 'anguille', genre: 'f' },
@@ -315,6 +314,6 @@ const names = {
     { name: 'wallaby', genre: 'm' },
     { name: 'yack', genre: 'm' },
     { name: 'zèbre', genre: 'm' },
-    { name: 'zébu', genre: 'm' }
-  ]
+    { name: 'zébu', genre: 'm' },
+  ],
 };

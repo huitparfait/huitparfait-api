@@ -1,7 +1,6 @@
 'use strict';
 
 const Joi = require('joi');
-
 const userService = require('./users.service');
 
 module.exports = [
@@ -17,7 +16,7 @@ module.exports = [
           name: Joi.string(),
           avatarUrl: Joi.string().uri({ scheme: 'https' }),
         }).required(),
-      }
+      },
     },
     handler (request) {
       return userService.connectUser({
@@ -47,7 +46,7 @@ module.exports = [
           avatarUrl: Joi.string().uri({ scheme: 'https' }),
           isAnonymous: Joi.boolean(),
         }).required(),
-      }
+      },
     },
     handler (request) {
       return userService.updateUser({

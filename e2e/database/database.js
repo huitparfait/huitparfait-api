@@ -2,8 +2,7 @@
 
 const exec = require('child_process').exec;
 
-
-function reset() {
+function reset () {
 
   return new Promise((resolve, reject) => {
     exec('npm run db:reset', null,

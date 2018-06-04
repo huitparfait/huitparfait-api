@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -71,11 +71,11 @@ module.exports = {
           is_admin: true,
           is_active: true,
         },
-      ]))
+      ]));
   },
 
   down: (queryInterface, Sequelize) => {
     return Promise.resolve()
-      .then(() => queryInterface.bulkDelete('hp_user'))
+      .then(() => queryInterface.bulkDelete('hp_user'));
   },
-}
+};

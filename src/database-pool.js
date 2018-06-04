@@ -1,11 +1,11 @@
 'use strict';
 
 const _ = require('lodash');
+const config = require('./config/config');
 const pg = require('pg');
+
 // Fix for parsing of numeric fields
 pg.types.setTypeParser(20, 'text', parseFloat);
-
-const config = require('./config/config');
 
 const pool = new pg.Pool({
   database: config.get('DATABASE_NAME'),
@@ -16,7 +16,7 @@ const pool = new pg.Pool({
   max: config.get('DATABASE_POOL_MAX'),
 });
 
-function camelCase(user) {
+function camelCase (user) {
   return _.mapKeys(user, (v, k) => _.camelCase(k));
 }
 

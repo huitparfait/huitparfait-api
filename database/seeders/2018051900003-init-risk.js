@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -78,11 +78,11 @@ module.exports = {
           id: '1999acef-066f-42c9-9a77-3cddb83d1eae',
           text: `But du pied gauche (prolongations incluses, hors tirs aux buts)`,
         },
-      ]))
+      ]));
   },
 
   down: (queryInterface, Sequelize) => {
     return Promise.resolve()
-    .then(() => queryInterface.bulkDelete('hp_risk'))
+      .then(() => queryInterface.bulkDelete('hp_risk'));
   },
-}
+};
