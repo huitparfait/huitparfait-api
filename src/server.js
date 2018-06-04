@@ -1,22 +1,22 @@
 'use strict';
 
+const config = require('./config/config');
 const Hapi = require('hapi');
+const homeRoutes = require('./home.routes');
+const jwtAuth = require('./auth/jwt.auth');
+const userRoutes = require('./users/users.routes');
 
-const routes = require('./routes');
-const userRoutes = require('./users/users.routes.js');
-const authPlugin = require('./auth/auth.plugin');
-
-const config = require('./config/config.js');
-async function createServer() {
+async function createServer () {
 
   const server = Hapi.server({
     port: config.get('PORT'),
   });
 
-  await server.register(authPlugin);
-
-  server.route(routes);
-  server.route(userRoutes);
+  await server.register([
+    jwtAuth,
+    homeRoutes,
+    userRoutes,
+  ]);
 
   return server;
 };

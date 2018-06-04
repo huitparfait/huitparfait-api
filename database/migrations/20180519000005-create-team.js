@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-const { uuid, date, foreignKey } = require('../lib/migrations-lib')
+const { uuid, date, foreignKey } = require('../lib/migrations-lib');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -21,11 +21,11 @@ module.exports = {
         order: { allowNull: false, type: Sequelize.INTEGER },
         goals: { type: Sequelize.INTEGER },
         penalties: { type: Sequelize.INTEGER },
-      }))
+      }));
   },
   down: (queryInterface, Sequelize) => {
     return Promise.resolve()
       .then(() => queryInterface.dropTable('hp_team_plays_in_game'))
-      .then(() => queryInterface.dropTable('hp_team'))
+      .then(() => queryInterface.dropTable('hp_team'));
   },
-}
+};

@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -580,11 +580,11 @@ module.exports = {
           city: 'Moscou',
           risk_id: '08705cff-e4a2-4d1a-8940-1cce00c2c2f4',
         },
-      ]))
+      ]));
   },
 
   down: (queryInterface, Sequelize) => {
     return Promise.resolve()
-      .then(() => queryInterface.bulkDelete('hp_game'))
+      .then(() => queryInterface.bulkDelete('hp_game'));
   },
-}
+};

@@ -1,27 +1,22 @@
 'use strict';
 
 const _ = require('lodash');
+const config = require('./config/config');
 const pg = require('pg');
+
 // Fix for parsing of numeric fields
 pg.types.setTypeParser(20, 'text', parseFloat);
 
-const config = require('./config/config');
-
-const DATABASE_NAME = config.get('DATABASE_NAME');
-const DATABASE_USER = config.get('DATABASE_USER');
-const DATABASE_PASSWORD = config.get('DATABASE_PASSWORD');
-const DATABASE_HOST = config.get('DATABASE_HOST');
-const DATABASE_PORT = config.get('DATABASE_PORT');
-
 const pool = new pg.Pool({
-  database: DATABASE_NAME,
-  user: DATABASE_USER,
-  host: DATABASE_HOST,
-  password: DATABASE_PASSWORD,
-  port: DATABASE_PORT,
+  database: config.get('DATABASE_NAME'),
+  user: config.get('DATABASE_USER'),
+  host: config.get('DATABASE_HOST'),
+  password: config.get('DATABASE_PASSWORD'),
+  port: config.get('DATABASE_PORT'),
+  max: config.get('DATABASE_POOL_MAX'),
 });
 
-function camelCase(user) {
+function camelCase (user) {
   return _.mapKeys(user, (v, k) => _.camelCase(k));
 }
 

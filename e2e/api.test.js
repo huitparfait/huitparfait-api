@@ -2,6 +2,7 @@
 
 const request = require('supertest');
 const { createServer } = require('../src/server');
+
 let server;
 
 test('GET /', async () => {

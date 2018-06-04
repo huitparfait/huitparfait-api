@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-const { uuid, date } = require('../lib/migrations-lib')
+const { uuid, date } = require('../lib/migrations-lib');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -11,10 +11,10 @@ module.exports = {
         updated_at: date,
         name: { allowNull: false, type: Sequelize.STRING },
         avatar_url: { type: Sequelize.STRING },
-      }))
+      }));
   },
   down: (queryInterface, Sequelize) => {
     return Promise.resolve()
-      .then(() => queryInterface.dropTable('hp_group'))
+      .then(() => queryInterface.dropTable('hp_group'));
   },
-}
+};

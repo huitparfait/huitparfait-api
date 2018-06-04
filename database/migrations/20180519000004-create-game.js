@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-const { uuid, date, foreignKey } = require('../lib/migrations-lib')
+const { uuid, date, foreignKey } = require('../lib/migrations-lib');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -14,9 +14,9 @@ module.exports = {
       stadium: { allowNull: false, type: Sequelize.STRING(100) },
       city: { allowNull: false, type: Sequelize.STRING(100) },
       risk_id: foreignKey('hp_risk', false),
-    })
+    });
   },
   down: (queryInterface, Sequelize) => {
-    return queryInterface.dropTable('hp_game')
+    return queryInterface.dropTable('hp_game');
   },
-}
+};

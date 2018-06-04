@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -198,11 +198,11 @@ module.exports = {
         { team_id: 'fd4f947e-7730-498b-bb4b-abcbfe4854ce', game_id: '1eabe9ad-3979-4ebf-9133-a17bfb278c5a', order: 2 },
         { team_id: 'c2965a1e-be93-49d4-b1f5-b6d757f3ad2e', game_id: 'cddf5ba9-152f-4c84-8aca-bbcc35f6e0ab', order: 1 },
         { team_id: '21c04a6e-01ae-49e4-b16e-ac53ef5f170e', game_id: 'cddf5ba9-152f-4c84-8aca-bbcc35f6e0ab', order: 2 },
-      ]))
+      ]));
   },
 
   down: (queryInterface, Sequelize) => {
     return Promise.resolve()
-      .then(() => queryInterface.bulkDelete('hp_team'))
+      .then(() => queryInterface.bulkDelete('hp_team'));
   },
-}
+};

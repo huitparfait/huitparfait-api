@@ -1,17 +1,17 @@
 'use strict';
 
-const sql = require('sql-tag');
 const database = require('../database-pool');
 const generateAnonymousName = require('./anonymous-name-generator');
-
+const sql = require('sql-tag');
 
 // Creates a new user or just update his/her last_connection_at date
 // Used during login phase
-function connectUser({ name, oauthHash, avatarUrl }) {
+function connectUser ({ name, oauthHash, avatarUrl }) {
 
+  const anonymousName = generateAnonymousName();
   const sqlQuery = sql`
     INSERT INTO Public.hp_user (name, anonymous_name, oauth_hash, avatar_url)
-    VALUES (${name}, ${generateAnonymousName()}, ${oauthHash}, ${avatarUrl})
+    VALUES (${name}, ${anonymousName}, ${oauthHash}, ${avatarUrl})
     ON CONFLICT (oauth_hash)
     DO UPDATE
     SET
@@ -28,10 +28,9 @@ function connectUser({ name, oauthHash, avatarUrl }) {
   return database.one(sqlQuery);
 }
 
-
 // Reads user details
 // Used when loading the application (and during login phase)
-function getUser(id) {
+function getUser (id) {
 
   const sqlQuery = sql`
       SELECT
@@ -48,7 +47,6 @@ function getUser(id) {
 
   return database.one(sqlQuery);
 }
-
 
 // Updates user details
 // Used in edit profile page
@@ -76,10 +74,9 @@ function updateUser ({ id, name, avatarUrl, isAnonymous }) {
   return database.one(sqlQuery);
 }
 
-
 // Reads a user's groups (in which s.he's active)
 // Returns active users count for each group
-function getUserGroups(userId) {
+function getUserGroups (userId) {
 
   const sqlQuery = sql`
       SELECT
@@ -103,9 +100,8 @@ function getUserGroups(userId) {
           lower(g.name)
 `;
 
-  return database.many(sqlQuery)
+  return database.many(sqlQuery);
 }
-
 
 module.exports = {
   connectUser,

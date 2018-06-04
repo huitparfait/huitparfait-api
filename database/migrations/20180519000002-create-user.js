@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-const { uuid, date, foreignKey } = require('../lib/migrations-lib')
+const { uuid, date, foreignKey } = require('../lib/migrations-lib');
 
 module.exports = {
   up: (queryInterface, Sequelize) => {
@@ -23,11 +23,11 @@ module.exports = {
         is_active: { allowNull: false, type: Sequelize.BOOLEAN },
         created_at: date,
         updated_at: date,
-      }))
+      }));
   },
   down: (queryInterface, Sequelize) => {
     return Promise.resolve()
       .then(() => queryInterface.dropTable('hp_user_in_group'))
-      .then(() => queryInterface.dropTable('hp_user'))
+      .then(() => queryInterface.dropTable('hp_user'));
   },
-}
+};

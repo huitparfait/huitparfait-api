@@ -1,6 +1,6 @@
-'use strict'
+'use strict';
 
-const Sequelize = require('sequelize')
+const Sequelize = require('sequelize');
 
 // https://github.com/sequelize/sequelize/issues/4679
 
@@ -24,6 +24,6 @@ module.exports = {
       onDelete: 'CASCADE',
       primaryKey,
       references: { model: tableName, key: 'id' },
-    }
+    };
   },
-}
+};

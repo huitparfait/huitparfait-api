@@ -18,49 +18,62 @@ const conf = convict({
   DATABASE_HOST: {
     doc: 'The database host',
     format: String,
-    default: "localhost",
+    required: true,
+    default: null,
     env: 'DATABASE_HOST',
   },
   DATABASE_PORT: {
     doc: 'The database port',
     format: Number,
-    default: 5432,
+    required: true,
+    default: null,
     env: 'DATABASE_PORT',
   },
   DATABASE_USER: {
     doc: 'The database user',
     format: String,
-    default: "",
+    required: true,
+    default: null,
     env: 'DATABASE_USER',
   },
   DATABASE_PASSWORD: {
     doc: 'The database password',
     format: String,
-    default: "",
+    required: true,
+    default: null,
     env: 'DATABASE_PASSWORD',
   },
   DATABASE_NAME: {
     doc: 'The database name',
     format: String,
-    default: "",
+    required: true,
+    default: null,
     env: 'DATABASE_NAME',
+  },
+  DATABASE_POOL_MAX: {
+    doc: 'The database name',
+    format: Number,
+    required: true,
+    default: null,
+    env: 'DATABASE_POOL_MAX',
   },
   JWT_PUBLIC_KEY: {
     doc: 'The RS512 public key to verify the JWT signature',
     format: String,
-    default: "",
+    required: true,
+    default: null,
     env: 'JWT_PUBLIC_KEY',
   },
   JWT_TEST_PRIVATE_KEY: {
     doc: 'The RS512 private key to sign JWT tokens. Used for development and testing only',
     format: String,
-    default: "",
+    default: null,
     env: 'JWT_TEST_PRIVATE_KEY',
   },
 });
 
 if (conf.get('NODE_ENV') === 'development') {
-  conf.loadFile('./src/config/development.config.json');
+  conf.loadFile('./src/config/config.dev.json');
 }
 
 module.exports = conf;

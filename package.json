@@ -19,7 +19,9 @@
     "db:migrate": "sequelize db:migrate",
     "db:seed": "sequelize db:seed:all",
     "db:migrate:undo:all": "sequelize db:migrate:undo:all",
-    "db:reset": "npm run db:migrate:undo:all && npm run db:migrate && npm run db:seed"
+    "db:reset": "npm run db:migrate:undo:all && npm run db:migrate && npm run db:seed",
+    "lint": "eslint .",
+    "lint:fix": "eslint --fix ."
   },
   "dependencies": {
     "convict": "4.2.0",
@@ -32,6 +34,13 @@
     "sql-tag": "1.0.1"
   },
   "devDependencies": {
+    "eslint": "4.19.1",
+    "eslint-config-standard": "11.0.0",
+    "eslint-plugin-import": "2.12.0",
+    "eslint-plugin-node": "6.0.1",
+    "eslint-plugin-promise": "3.8.0",
+    "eslint-plugin-sort-requires": "2.1.0",
+    "eslint-plugin-standard": "3.1.0",
     "jest": "23.1.0",
     "jsonwebtoken": "8.2.2",
     "nodemon": "1.17.5",
