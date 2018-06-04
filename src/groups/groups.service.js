@@ -3,6 +3,33 @@
 const database = require('../database-pool');
 const sql = require('sql-tag');
 
+// Create a group (in which the user will be the first active and admin member)
+// Returns the created group
+function createGroup (userId, { name, avatarUrl }) {
+
+  const sqlQuery = sql`
+      WITH g AS (
+          INSERT INTO Public.hp_group (name, avatar_url)
+          VALUES (${name}, ${avatarUrl})
+          RETURNING id, name, avatar_url
+      ),
+      ug AS (
+          INSERT INTO hp_user_in_group (user_id, group_id, is_admin, is_active)
+          SELECT ${userId}, g.id, true, true
+          FROM g
+      )
+      SELECT
+          id,
+          name,
+          avatar_url,
+          true AS is_admin,
+          1 AS user_count
+      FROM g
+`;
+
+  return database.one(sqlQuery);
+}
+
 // Reads a user's specific group (in which s.he's active)
 // Returns active users count
 function getGroup (userId, groupId) {
@@ -31,5 +58,6 @@ function getGroup (userId, groupId) {
 }
 
 module.exports = {
+  createGroup,
   getGroup,
 };

@@ -1,10 +1,33 @@
 'use strict';
 
 const auth = require('./utils/auth');
+const database = require('./utils/database');
 const request = require('supertest');
 const { createServer } = require('../src/server');
 
 let server;
+
+test('POST /api/groups', async () => {
+
+  // Reset the DB to avoid weird results
+  await database.reset();
+
+  const response = await server
+    .post('/api/groups')
+    .send({
+      name: 'Nirvana',
+      avatarUrl: 'https://fr.wikipedia.org/wiki/Nirvana_(groupe)#/media/File:NirvanaLogo.png',
+    })
+    .set('Authorization', `Bearer ${auth.getJohnsToken()}`);
+
+  expect(response.status).toEqual(200);
+  // a UUID
+  expect(response.body.id).toHaveLength(36);
+  expect(response.body.name).toEqual('Nirvana');
+  expect(response.body.avatarUrl).toEqual('https://fr.wikipedia.org/wiki/Nirvana_(groupe)#/media/File:NirvanaLogo.png');
+  expect(response.body.isAdmin).toEqual(true);
+  expect(response.body.userCount).toEqual(1);
+});
 
 test('GET /api/groups/{id}', async () => {
 
