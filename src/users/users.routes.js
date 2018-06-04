@@ -35,7 +35,7 @@ module.exports = {
         method: 'GET',
         path: '/api/users/me',
         handler (request) {
-          return userService.getUser(request.auth.credentials.id);
+          return userService.getUser(request.auth.credentials.sub);
         },
       },
 
@@ -53,7 +53,7 @@ module.exports = {
         },
         handler (request) {
           return userService.updateUser({
-            id: request.auth.credentials.id,
+            id: request.auth.credentials.sub,
             name: request.payload.name,
             avatarUrl: request.payload.avatarUrl,
             isAnonymous: request.payload.isAnonymous,
@@ -65,7 +65,7 @@ module.exports = {
         method: 'GET',
         path: '/api/users/me/groups',
         handler (request) {
-          return userService.getUserGroups(request.auth.credentials.id);
+          return userService.getUserGroups(request.auth.credentials.sub);
         },
       },
 

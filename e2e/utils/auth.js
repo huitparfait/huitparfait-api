@@ -19,7 +19,7 @@ function getAnonymousToken () {
 let johnsToken;
 function getJohnsToken () {
   // Token for john Lennon (from the test data set)
-  johnsToken = johnsToken || sign({ id: '15c336ea-091b-425a-a99b-190179623ad4' });
+  johnsToken = johnsToken || sign({ sub: '15c336ea-091b-425a-a99b-190179623ad4' });
   return johnsToken;
 }
 

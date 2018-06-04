@@ -21,7 +21,7 @@ module.exports = {
           },
         },
         handler (request) {
-          return groupService.createGroup(request.auth.credentials.id, {
+          return groupService.createGroup(request.auth.credentials.sub, {
             name: request.payload.name,
             avatarUrl: request.payload.avatarUrl,
           });
@@ -39,7 +39,7 @@ module.exports = {
           },
         },
         handler (request) {
-          return groupService.getGroup(request.auth.credentials.id, request.params.id);
+          return groupService.getGroup(request.auth.credentials.sub, request.params.id);
         },
       },
 
@@ -58,7 +58,7 @@ module.exports = {
           },
         },
         handler (request) {
-          return groupService.updateGroup(request.auth.credentials.id, request.params.id, {
+          return groupService.updateGroup(request.auth.credentials.sub, request.params.id, {
             name: request.payload.name,
             avatarUrl: request.payload.avatarUrl,
           });

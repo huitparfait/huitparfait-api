@@ -28,7 +28,7 @@ module.exports = {
 function validateToken (decoded) {
   // This should be enough to validate that the id is a UUID without any lib or regex involved
   const UUID_LENGTH = 36;
-  const isValid = (decoded.id.length === UUID_LENGTH);
+  const isValid = (decoded.sub.length === UUID_LENGTH);
   return { isValid };
 };
 
