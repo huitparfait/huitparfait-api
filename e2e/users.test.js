@@ -1,7 +1,7 @@
 'use strict';
 
-const auth = require('./auth/auth');
-const database = require('./database/database');
+const auth = require('./utils/auth');
+const database = require('./utils/database');
 const request = require('supertest');
 const { createServer } = require('../src/server');
 
