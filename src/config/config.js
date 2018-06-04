@@ -66,7 +66,7 @@ const conf = convict({
 });
 
 if (conf.get('NODE_ENV') === 'development') {
-  conf.loadFile('./src/config/development.config.json');
+  conf.loadFile('./src/config/config.dev.json');
 }
 
 module.exports = conf;
