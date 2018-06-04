@@ -9,9 +9,6 @@ let server;
 
 test('POST /api/groups', async () => {
 
-  // Reset the DB to avoid weird results
-  await database.reset();
-
   const response = await server
     .post('/api/groups')
     .send({
@@ -27,6 +24,9 @@ test('POST /api/groups', async () => {
   expect(response.body.avatarUrl).toEqual('https://fr.wikipedia.org/wiki/Nirvana_(groupe)#/media/File:NirvanaLogo.png');
   expect(response.body.isAdmin).toEqual(true);
   expect(response.body.userCount).toEqual(1);
+
+  // Reset the DB to avoid weird results
+  await database.reset();
 });
 
 test('GET /api/groups/{id}', async () => {
@@ -46,9 +46,6 @@ test('GET /api/groups/{id}', async () => {
 
 test('PUT /api/groups/{id}', async () => {
 
-  // Reset the DB to avoid weird results
-  await database.reset();
-
   const response = await server
     .put('/api/groups/92c34810-d09a-4d80-953f-6943270b4a14')
     .send({
@@ -61,6 +58,9 @@ test('PUT /api/groups/{id}', async () => {
   expect(response.body.id).toEqual('92c34810-d09a-4d80-953f-6943270b4a14');
   expect(response.body.name).toEqual('The Better Beatles');
   expect(response.body.avatarUrl).toEqual('https://fr.wikipedia.org/wiki/Better_Beatles.jpg');
+
+  // Reset the DB to avoid weird results
+  await database.reset();
 });
 
 beforeAll(async () => {

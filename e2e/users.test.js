@@ -9,9 +9,6 @@ let server;
 
 test('POST /api/users/me', async () => {
 
-  // Reset the DB to avoid weird results
-  await database.reset();
-
   // Make a first call (creation after first login)
   const firstResponse = await server
     .post('/api/users/me')
@@ -49,6 +46,9 @@ test('POST /api/users/me', async () => {
   // Should not have changed
   expect(secondResponse.body.avatarUrl).toEqual('https://upload.wikimedia.org/wikipedia/commons/1/19/Nirvana_around_1992.jpg');
   expect(secondResponse.body.isAnonymous).toEqual(true);
+
+  // Reset the DB to avoid weird results
+  await database.reset();
 });
 
 test('GET /api/users/me', async () => {
@@ -69,9 +69,6 @@ test('GET /api/users/me', async () => {
 
 test('PUT /api/users/me', async () => {
 
-  // Reset the DB to avoid weird results
-  await database.reset();
-
   const response = await server
     .put('/api/users/me')
     .send({
@@ -87,6 +84,9 @@ test('PUT /api/users/me', async () => {
   expect(response.body.anonymousName).toEqual('John L.');
   expect(response.body.avatarUrl).toEqual('https://new.jons.avatar.location');
   expect(response.body.isAnonymous).toEqual(false);
+
+  // Reset the DB to avoid weird results
+  await database.reset();
 });
 
 test('GET /api/users/me/groups', async () => {
