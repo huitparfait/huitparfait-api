@@ -3,10 +3,10 @@
 const Hapi = require('hapi');
 
 const routes = require('./routes');
-const userRoutes = require('./users/users.routes.js');
+const userRoutes = require('./users/users.routes');
 const authPlugin = require('./auth/auth.plugin');
 
-const config = require('./config/config.js');
+const config = require('./config/config');
 async function createServer() {
 
   const server = Hapi.server({

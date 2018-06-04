@@ -2,7 +2,7 @@
 
 const Joi = require('joi');
 
-const userService = require('./users.service.js');
+const userService = require('./users.service');
 
 module.exports = [
 
