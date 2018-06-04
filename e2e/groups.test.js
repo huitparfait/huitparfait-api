@@ -44,6 +44,25 @@ test('GET /api/groups/{id}', async () => {
   });
 });
 
+test('PUT /api/groups/{id}', async () => {
+
+  // Reset the DB to avoid weird results
+  await database.reset();
+
+  const response = await server
+    .put('/api/groups/92c34810-d09a-4d80-953f-6943270b4a14')
+    .send({
+      name: 'The Better Beatles',
+      avatarUrl: 'https://fr.wikipedia.org/wiki/Better_Beatles.jpg',
+    })
+    .set('Authorization', `Bearer ${auth.getJohnsToken()}`);
+
+  expect(response.status).toEqual(200);
+  expect(response.body.id).toEqual('92c34810-d09a-4d80-953f-6943270b4a14');
+  expect(response.body.name).toEqual('The Better Beatles');
+  expect(response.body.avatarUrl).toEqual('https://fr.wikipedia.org/wiki/Better_Beatles.jpg');
+});
+
 beforeAll(async () => {
   const hapiServer = await createServer();
   server = request(hapiServer.listener);

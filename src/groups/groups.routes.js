@@ -43,6 +43,28 @@ module.exports = {
         },
       },
 
+      {
+        method: 'PUT',
+        path: '/api/groups/{id}',
+        config: {
+          validate: {
+            params: {
+              id: Joi.string().uuid(),
+            },
+            payload: Joi.object({
+              name: Joi.string().required(),
+              avatarUrl: Joi.string().uri({ scheme: 'https' }),
+            }).required(),
+          },
+        },
+        handler (request) {
+          return groupService.updateGroup(request.auth.credentials.id, request.params.id, {
+            name: request.payload.name,
+            avatarUrl: request.payload.avatarUrl,
+          });
+        },
+      },
+
     ]);
   },
 };

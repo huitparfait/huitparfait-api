@@ -57,7 +57,36 @@ function getGroup (userId, groupId) {
   return database.one(sqlQuery);
 }
 
+// Update group details
+// User needs to be admin of the group
+// Returns the edited group
+function updateGroup (userId, groupId, { name, avatarUrl }) {
+
+  const sqlQuery = sql`
+      UPDATE
+          Public.hp_group
+      SET
+          updated_at = now(),
+          name = ${name},
+          avatar_url = ${avatarUrl}
+      FROM
+          hp_user_in_group AS ug
+      WHERE
+          id = ug.group_id
+          AND ug.user_id = ${userId}
+          AND ug.group_id = ${groupId}
+          AND ug.is_admin = true
+      RETURNING
+          id,
+          name,
+          avatar_url
+`;
+
+  return database.one(sqlQuery);
+}
+
 module.exports = {
   createGroup,
   getGroup,
+  updateGroup,
 };
