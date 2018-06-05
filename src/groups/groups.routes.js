@@ -122,6 +122,35 @@ module.exports = {
         },
       },
 
+      {
+        method: 'PUT',
+        path: '/api/groups/{groupId}/users/{userId}',
+        config: {
+          validate: {
+            params: {
+              groupId: Joi.string().uuid(),
+              userId: Joi.string().uuid(),
+            },
+            payload: Joi.object({
+              isActive: Joi.boolean().required(),
+              isAdmin: Joi.boolean().required(),
+            }).required(),
+          },
+        },
+        handler (request) {
+          return groupService
+            .updateUserMembership(
+              request.auth.credentials.sub,
+              request.params.groupId,
+              request.params.userId, {
+                isActive: request.payload.isActive,
+                isAdmin: request.payload.isAdmin,
+              }
+            )
+            .catch(defaultErrorHandling(request));
+        },
+      },
+
     ]);
   },
 };

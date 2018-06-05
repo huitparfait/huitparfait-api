@@ -152,6 +152,30 @@ function addUserToGroup (userId, groupId) {
   return database.many(sqlQuery);
 }
 
+// Updates isActive and/or isAdmin status of a user in a group
+// User needs to be admin of the group
+function updateUserMembership (adminId, groupId, userId, { isActive, isAdmin }) {
+
+  const sqlQuery = sql`
+        UPDATE
+            hp_user_in_group AS uga
+        SET
+            updated_at = now(),
+            is_active = ${isActive},
+            is_admin = ${isAdmin}
+        FROM
+            hp_user_in_group AS ugb
+        WHERE
+            uga.user_id = ${userId}
+            AND uga.group_id = ugb.group_id
+            AND ugb.user_id = ${adminId}
+            AND ugb.group_id = ${groupId}
+            AND ugb.is_admin = true
+`;
+
+  return database.one(sqlQuery);
+}
+
 module.exports = {
   createGroup,
   getGroup,
@@ -159,4 +183,5 @@ module.exports = {
   deleteGroup,
   getGroupMembers,
   addUserToGroup,
+  updateUserMembership,
 };
