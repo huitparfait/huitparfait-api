@@ -20,6 +20,18 @@ function camelCase (user) {
   return _.mapKeys(user, (v, k) => _.camelCase(k));
 }
 
+class DatabaseNotFoundError extends Error {
+  constructor(message) {
+    super(`DatabaseNotFoundError: ${message}`);
+  }
+}
+
+class DatabaseTooManyResultsError extends Error {
+  constructor(message) {
+    super(`DatabaseTooManyResultsError: ${message}`);
+  }
+}
+
 module.exports = {
 
   async many (query) {
@@ -31,12 +43,15 @@ module.exports = {
   async one (query) {
     const rawResults = await pool.query(query);
     if (rawResults.rowCount === 0) {
-      throw new Error('Database error: NoResults');
+      throw new DatabaseNotFoundError('No Results');
     }
     if (rawResults.rowCount > 1) {
-      throw new Error('Database error: TooManyResults');
+      throw new DatabaseTooManyResultsError('Too many results');
     }
     return camelCase(rawResults.rows[0]);
   },
+
+  DatabaseNotFoundError,
+  DatabaseTooManyResultsError,
 
 };
