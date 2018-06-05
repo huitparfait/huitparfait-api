@@ -39,6 +39,7 @@ test('GET /api/groups/{id}', async () => {
   expect(response.body).toEqual({
     id: '92c34810-d09a-4d80-953f-6943270b4a14',
     name: 'The Beatles',
+    slug: 'the-beatles',
     avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/d/df/The_Fabs.JPG/390px-The_Fabs.JPG',
     userCount: 4,
   });

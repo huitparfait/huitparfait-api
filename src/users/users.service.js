@@ -3,6 +3,7 @@
 const database = require('../database-pool');
 const generateAnonymousName = require('./anonymous-name-generator');
 const sql = require('sql-tag');
+const { addSlug } = require('../utils/add-slug');
 
 // Creates a new user or just update his/her last_connection_at date
 // Used during login phase
@@ -100,7 +101,8 @@ function getUserGroups (userId) {
           lower(g.name)
 `;
 
-  return database.many(sqlQuery);
+  return database.many(sqlQuery)
+    .then((groups) => groups.map(addSlug));
 }
 
 module.exports = {

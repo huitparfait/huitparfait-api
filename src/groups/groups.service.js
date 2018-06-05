@@ -2,6 +2,7 @@
 
 const database = require('../database-pool');
 const sql = require('sql-tag');
+const { addSlug } = require('../utils/add-slug');
 
 // Create a group (in which the user will be the first active and admin member)
 // Returns the created group
@@ -27,7 +28,8 @@ function createGroup (userId, { name, avatarUrl }) {
       FROM g
 `;
 
-  return database.one(sqlQuery);
+  return database.one(sqlQuery)
+    .then((group) => addSlug(group));
 }
 
 // Reads a user's specific group (in which s.he's active)
@@ -54,7 +56,8 @@ function getGroup (userId, groupId) {
           uga.is_admin
 `;
 
-  return database.one(sqlQuery);
+  return database.one(sqlQuery)
+    .then((group) => addSlug(group));
 }
 
 // Update group details
@@ -82,7 +85,8 @@ function updateGroup (userId, groupId, { name, avatarUrl }) {
           avatar_url
 `;
 
-  return database.one(sqlQuery);
+  return database.one(sqlQuery)
+    .then((group) => addSlug(group));
 }
 
 module.exports = {
