@@ -10,7 +10,7 @@ function connectUser ({ name, oauthHash, avatarUrl }) {
 
   const anonymousName = generateAnonymousName();
   const sqlQuery = sql`
-    INSERT INTO Public.hp_user (name, anonymous_name, oauth_hash, avatar_url)
+    INSERT INTO hp_user (name, anonymous_name, oauth_hash, avatar_url)
     VALUES (${name}, ${anonymousName}, ${oauthHash}, ${avatarUrl})
     ON CONFLICT (oauth_hash)
     DO UPDATE
@@ -40,7 +40,7 @@ function getUser (id) {
           avatar_url,
           is_anonymous
       FROM
-          Public.hp_user
+          hp_user
       WHERE
           id = ${id}
 `;
@@ -55,7 +55,7 @@ function updateUser ({ id, name, avatarUrl, isAnonymous }) {
 
   const sqlQuery = sql`
       UPDATE
-          Public.hp_user
+          hp_user
       SET
           updated_at = now(),
           name = ${name},
@@ -87,7 +87,7 @@ function getUserGroups (userId) {
           count(ugb) AS user_count
       FROM
           hp_user_in_group AS uga
-          INNER JOIN Public.hp_group AS g ON uga.group_id = g.id
+          INNER JOIN hp_group AS g ON uga.group_id = g.id
           INNER JOIN hp_user_in_group AS ugb ON g.id = ugb.group_id
       WHERE
           uga.user_id = ${userId}
