@@ -2,6 +2,7 @@
 
 const database = require('../database-pool');
 const sql = require('sql-tag');
+const { addSlug } = require('../utils/add-slug');
 
 // Create a group (in which the user will be the first active and admin member)
 // Returns the created group
@@ -9,7 +10,7 @@ function createGroup (userId, { name, avatarUrl }) {
 
   const sqlQuery = sql`
       WITH g AS (
-          INSERT INTO Public.hp_group (name, avatar_url)
+          INSERT INTO hp_group (name, avatar_url)
           VALUES (${name}, ${avatarUrl})
           RETURNING id, name, avatar_url
       ),
@@ -27,7 +28,8 @@ function createGroup (userId, { name, avatarUrl }) {
       FROM g
 `;
 
-  return database.one(sqlQuery);
+  return database.one(sqlQuery)
+    .then((group) => addSlug(group));
 }
 
 // Reads a user's specific group (in which s.he's active)
@@ -42,7 +44,7 @@ function getGroup (userId, groupId) {
           count(ugb) AS user_count
       FROM
           hp_user_in_group AS uga
-          INNER JOIN Public.hp_group AS g ON uga.group_id = g.id
+          INNER JOIN hp_group AS g ON uga.group_id = g.id
           INNER JOIN hp_user_in_group AS ugb ON g.id = ugb.group_id
       WHERE
           uga.user_id = ${userId}
@@ -54,7 +56,8 @@ function getGroup (userId, groupId) {
           uga.is_admin
 `;
 
-  return database.one(sqlQuery);
+  return database.one(sqlQuery)
+    .then((group) => addSlug(group));
 }
 
 // Update group details
@@ -64,7 +67,7 @@ function updateGroup (userId, groupId, { name, avatarUrl }) {
 
   const sqlQuery = sql`
       UPDATE
-          Public.hp_group
+          hp_group
       SET
           updated_at = now(),
           name = ${name},
@@ -82,7 +85,8 @@ function updateGroup (userId, groupId, { name, avatarUrl }) {
           avatar_url
 `;
 
-  return database.one(sqlQuery);
+  return database.one(sqlQuery)
+    .then((group) => addSlug(group));
 }
 
 module.exports = {

@@ -9,7 +9,7 @@ module.exports = {
         id: uuid,
         created_at: date,
         updated_at: date,
-        oauth_hash: { allowNull: false, type: Sequelize.STRING(64), unique: true },
+        oauth_hash: { allowNull: false, type: Sequelize.STRING(200), unique: true },
         name: { allowNull: false, type: Sequelize.STRING(80) },
         anonymous_name: { allowNull: false, type: Sequelize.STRING(80) },
         avatar_url: { type: Sequelize.STRING(200) },

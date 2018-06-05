@@ -31,6 +31,7 @@
     "pg": "7.4.3",
     "sequelize": "4.37.10",
     "sequelize-cli": "4.0.0",
+    "slug": "0.9.1",
     "sql-tag": "1.0.1"
   },
   "devDependencies": {
