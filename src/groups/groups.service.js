@@ -108,9 +108,40 @@ function deleteGroup (userId, groupId) {
   return database.one(sqlQuery);
 }
 
+// Get members of a group
+// User needs to be admin of the group
+function getGroupMembers (userId, groupId) {
+
+  const sqlQuery = sql`
+      SELECT
+          u.id,
+          u.name,
+          u.anonymous_name,
+          u.avatar_url,
+          u.is_anonymous,
+          ugb.is_admin,
+          ugb.is_active,
+          ugb.created_at AS member_since
+      FROM
+          hp_user_in_group AS uga
+          INNER JOIN hp_user_in_group AS ugb ON uga.group_id = ugb.group_id
+          INNER JOIN hp_user AS u ON ugb.user_id = u.id
+      WHERE
+          uga.user_id = ${userId}
+          AND uga.group_id = ${groupId}
+          AND uga.is_admin = true
+      ORDER BY
+          is_admin DESC,
+          member_since DESC
+`;
+
+  return database.many(sqlQuery);
+}
+
 module.exports = {
   createGroup,
   getGroup,
   updateGroup,
   deleteGroup,
+  getGroupMembers,
 };

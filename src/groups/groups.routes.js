@@ -88,6 +88,23 @@ module.exports = {
         },
       },
 
+      {
+        method: 'GET',
+        path: '/api/groups/{id}/users',
+        config: {
+          validate: {
+            params: {
+              id: Joi.string().uuid(),
+            },
+          },
+        },
+        handler (request) {
+          return groupService
+            .getGroupMembers(request.auth.credentials.sub, request.params.id)
+            .catch(defaultErrorHandling(request));
+        },
+      },
+
     ]);
   },
 };

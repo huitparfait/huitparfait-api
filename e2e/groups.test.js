@@ -88,6 +88,16 @@ test('DELETE /api/groups/{id}', async () => {
   await database.reset();
 });
 
+test('GET /api/groups/{id}/users', async () => {
+
+  const response = await server
+    .get('/api/groups/92c34810-d09a-4d80-953f-6943270b4a14/users')
+    .set('Authorization', `Bearer ${auth.getJohnsToken()}`);
+
+  expect(response.status).toEqual(200);
+  expect(response.body.map((user) => user.name)).toEqual(['John Lennon', 'Paul McCartney', 'George Harrison', 'Ringo Starr']);
+});
+
 beforeAll(async () => {
   const hapiServer = await createServer();
   server = request(hapiServer.listener);
