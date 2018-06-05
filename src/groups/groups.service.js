@@ -89,8 +89,28 @@ function updateGroup (userId, groupId, { name, avatarUrl }) {
     .then((group) => addSlug(group));
 }
 
+// Deletes group
+// User needs to be admin of the group
+function deleteGroup (userId, groupId) {
+
+  const sqlQuery = sql`
+      DELETE FROM
+          hp_group
+      USING
+          hp_user_in_group AS ug
+      WHERE
+          id = ug.group_id
+          AND ug.user_id = ${userId}
+          AND ug.group_id = ${groupId}
+          AND ug.is_admin = true
+`;
+
+  return database.one(sqlQuery);
+}
+
 module.exports = {
   createGroup,
   getGroup,
   updateGroup,
+  deleteGroup,
 };

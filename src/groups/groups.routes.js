@@ -1,5 +1,6 @@
 'use strict';
 
+const defaultErrorHandling = require('../utils/default-error-handling');
 const groupService = require('./groups.service');
 const Joi = require('joi');
 
@@ -39,7 +40,9 @@ module.exports = {
           },
         },
         handler (request) {
-          return groupService.getGroup(request.auth.credentials.sub, request.params.id);
+          return groupService
+            .getGroup(request.auth.credentials.sub, request.params.id)
+            .catch(defaultErrorHandling(request));
         },
       },
 
@@ -62,6 +65,22 @@ module.exports = {
             name: request.payload.name,
             avatarUrl: request.payload.avatarUrl,
           });
+        },
+      },
+
+      {
+        method: 'DELETE',
+        path: '/api/groups/{id}',
+        config: {
+          validate: {
+            params: {
+              id: Joi.string().uuid(),
+            },
+          },
+        },
+        handler (request, h) {
+          return groupService.deleteGroup(request.auth.credentials.sub, request.params.id)
+            .then(() => h.response().code(204));
         },
       },
 

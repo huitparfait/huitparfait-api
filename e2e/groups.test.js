@@ -64,6 +64,30 @@ test('PUT /api/groups/{id}', async () => {
   await database.reset();
 });
 
+test('DELETE /api/groups/{id}', async () => {
+
+  const firstResponse = await server
+    .get('/api/groups/92c34810-d09a-4d80-953f-6943270b4a14')
+    .set('Authorization', `Bearer ${auth.getJohnsToken()}`);
+
+  expect(firstResponse.status).toEqual(200);
+
+  const secondResponse = await server
+    .del('/api/groups/92c34810-d09a-4d80-953f-6943270b4a14')
+    .set('Authorization', `Bearer ${auth.getJohnsToken()}`);
+
+  expect(secondResponse.status).toEqual(204);
+
+  const thirdResponse = await server
+    .get('/api/groups/92c34810-d09a-4d80-953f-6943270b4a14')
+    .set('Authorization', `Bearer ${auth.getJohnsToken()}`);
+
+  expect(thirdResponse.status).toEqual(404);
+
+  // Reset the DB to avoid weird results
+  await database.reset();
+});
+
 beforeAll(async () => {
   const hapiServer = await createServer();
   server = request(hapiServer.listener);
