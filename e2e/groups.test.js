@@ -98,6 +98,27 @@ test('GET /api/groups/{id}/users', async () => {
   expect(response.body.map((user) => user.name)).toEqual(['John Lennon', 'Paul McCartney', 'George Harrison', 'Ringo Starr']);
 });
 
+test('POST /api/groups/{id}/users', async () => {
+
+  const firstResponse = await server
+    .get('/api/groups/6f53a4f5-89bd-4cbb-9bdc-1d22b862ac03/users')
+    .set('Authorization', `Bearer ${auth.getMicksToken()}`);
+  expect(firstResponse.body.map((user) => user.name)).toEqual(['Mick Jagger']);
+
+  const secondResponse = await server
+    .post('/api/groups/6f53a4f5-89bd-4cbb-9bdc-1d22b862ac03/users')
+    .set('Authorization', `Bearer ${auth.getJohnsToken()}`);
+  expect(secondResponse.status).toEqual(200);
+
+  const thirdResponse = await server
+    .get('/api/groups/6f53a4f5-89bd-4cbb-9bdc-1d22b862ac03/users')
+    .set('Authorization', `Bearer ${auth.getMicksToken()}`);
+  expect(thirdResponse.body.map((user) => user.name)).toEqual(['Mick Jagger', 'John Lennon']);
+
+  // Reset the DB to avoid weird results
+  await database.reset();
+});
+
 beforeAll(async () => {
   const hapiServer = await createServer();
   server = request(hapiServer.listener);

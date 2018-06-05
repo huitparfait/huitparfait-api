@@ -23,7 +23,15 @@ function getJohnsToken () {
   return johnsToken;
 }
 
+let micksToken;
+function getMicksToken () {
+  // Token for mick Jagger (from the test data set)
+  micksToken = micksToken || sign({ sub: '7681a3ad-24d2-44c4-a73a-2b8f0da16084' });
+  return micksToken;
+}
+
 module.exports = {
   getAnonymousToken,
   getJohnsToken,
+  getMicksToken,
 };

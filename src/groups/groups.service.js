@@ -138,10 +138,25 @@ function getGroupMembers (userId, groupId) {
   return database.many(sqlQuery);
 }
 
+// User joins a group
+// User needs to have the "secret" id of the group
+function addUserToGroup (userId, groupId) {
+
+  const sqlQuery = sql`
+      INSERT INTO hp_user_in_group (user_id, group_id, is_admin, is_active)
+      VALUES (${userId}, ${groupId}, false, true)
+      ON CONFLICT (user_id, group_id)
+      DO NOTHING
+`;
+
+  return database.many(sqlQuery);
+}
+
 module.exports = {
   createGroup,
   getGroup,
   updateGroup,
   deleteGroup,
   getGroupMembers,
+  addUserToGroup,
 };
