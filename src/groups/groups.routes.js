@@ -61,10 +61,12 @@ module.exports = {
           },
         },
         handler (request) {
-          return groupService.updateGroup(request.auth.credentials.sub, request.params.id, {
-            name: request.payload.name,
-            avatarUrl: request.payload.avatarUrl,
-          });
+          return groupService
+            .updateGroup(request.auth.credentials.sub, request.params.id, {
+              name: request.payload.name,
+              avatarUrl: request.payload.avatarUrl,
+            })
+            .catch(defaultErrorHandling(request));
         },
       },
 
@@ -79,8 +81,10 @@ module.exports = {
           },
         },
         handler (request, h) {
-          return groupService.deleteGroup(request.auth.credentials.sub, request.params.id)
-            .then(() => h.response().code(204));
+          return groupService
+            .deleteGroup(request.auth.credentials.sub, request.params.id)
+            .then(() => h.response().code(204))
+            .catch(defaultErrorHandling(request));
         },
       },
 
