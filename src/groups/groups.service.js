@@ -152,17 +152,16 @@ function addUserToGroup (userId, groupId) {
   return database.many(sqlQuery);
 }
 
-// Updates isActive and/or isAdmin status of a user in a group
+// Updates isActive status of a user in a group
 // User needs to be admin of the group
-function updateUserMembership (adminId, groupId, userId, { isActive, isAdmin }) {
+function updateUserMembership (adminId, groupId, userId, { isActive }) {
 
   const sqlQuery = sql`
         UPDATE
             hp_user_in_group AS uga
         SET
             updated_at = now(),
-            is_active = ${isActive},
-            is_admin = ${isAdmin}
+            is_active = ${isActive}
         FROM
             hp_user_in_group AS ugb
         WHERE
