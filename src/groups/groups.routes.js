@@ -1,5 +1,6 @@
 'use strict';
 
+const defaultErrorHandling = require('../utils/default-error-handling');
 const groupService = require('./groups.service');
 const Joi = require('joi');
 
@@ -39,7 +40,9 @@ module.exports = {
           },
         },
         handler (request) {
-          return groupService.getGroup(request.auth.credentials.sub, request.params.id);
+          return groupService
+            .getGroup(request.auth.credentials.sub, request.params.id)
+            .catch(defaultErrorHandling(request));
         },
       },
 
@@ -58,10 +61,93 @@ module.exports = {
           },
         },
         handler (request) {
-          return groupService.updateGroup(request.auth.credentials.sub, request.params.id, {
-            name: request.payload.name,
-            avatarUrl: request.payload.avatarUrl,
-          });
+          return groupService
+            .updateGroup(request.auth.credentials.sub, request.params.id, {
+              name: request.payload.name,
+              avatarUrl: request.payload.avatarUrl,
+            })
+            .catch(defaultErrorHandling(request));
+        },
+      },
+
+      {
+        method: 'DELETE',
+        path: '/api/groups/{id}',
+        config: {
+          validate: {
+            params: {
+              id: Joi.string().uuid(),
+            },
+          },
+        },
+        handler (request, h) {
+          return groupService
+            .deleteGroup(request.auth.credentials.sub, request.params.id)
+            .then(() => h.response().code(204))
+            .catch(defaultErrorHandling(request));
+        },
+      },
+
+      {
+        method: 'GET',
+        path: '/api/groups/{id}/users',
+        config: {
+          validate: {
+            params: {
+              id: Joi.string().uuid(),
+            },
+          },
+        },
+        handler (request) {
+          return groupService
+            .getGroupMembers(request.auth.credentials.sub, request.params.id)
+            .catch(defaultErrorHandling(request));
+        },
+      },
+
+      {
+        method: 'POST',
+        path: '/api/groups/{id}/users',
+        config: {
+          validate: {
+            params: {
+              id: Joi.string().uuid(),
+            },
+          },
+        },
+        handler (request) {
+          return groupService
+            .addUserToGroup(request.auth.credentials.sub, request.params.id)
+            .catch(defaultErrorHandling(request));
+        },
+      },
+
+      {
+        method: 'PUT',
+        path: '/api/groups/{groupId}/users/{userId}',
+        config: {
+          validate: {
+            params: {
+              groupId: Joi.string().uuid(),
+              userId: Joi.string().uuid(),
+            },
+            payload: Joi.object({
+              isActive: Joi.boolean().required(),
+              isAdmin: Joi.boolean().required(),
+            }).required(),
+          },
+        },
+        handler (request) {
+          return groupService
+            .updateUserMembership(
+              request.auth.credentials.sub,
+              request.params.groupId,
+              request.params.userId, {
+                isActive: request.payload.isActive,
+                isAdmin: request.payload.isAdmin,
+              }
+            )
+            .catch(defaultErrorHandling(request));
         },
       },
 
