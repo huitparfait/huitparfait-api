@@ -28,6 +28,7 @@
     "convict": "4.2.0",
     "hapi": "17.5.0",
     "hapi-auth-jwt2": "8.1.0",
+    "identicon.js": "2.3.2",
     "joi": "13.3.0",
     "pg": "7.4.3",
     "sequelize": "4.37.10",

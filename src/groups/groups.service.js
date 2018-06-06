@@ -3,6 +3,7 @@
 const database = require('../database-pool');
 const sql = require('sql-tag');
 const { addSlug } = require('../utils/add-slug');
+const { addIdenticon } = require('../utils/add-identicon');
 
 // Create a group (in which the user will be the first active and admin member)
 // Returns the created group
@@ -29,7 +30,8 @@ function createGroup (userId, { name, avatarUrl }) {
 `;
 
   return database.one(sqlQuery)
-    .then((group) => addSlug(group));
+    .then((group) => addSlug(group))
+    .then((group) => addIdenticon(group));
 }
 
 // Reads a user's specific group (in which s.he's active)
@@ -57,7 +59,8 @@ function getGroup (userId, groupId) {
 `;
 
   return database.one(sqlQuery)
-    .then((group) => addSlug(group));
+    .then((group) => addSlug(group))
+    .then((group) => addIdenticon(group));
 }
 
 // Update group details
@@ -86,7 +89,8 @@ function updateGroup (userId, groupId, { name, avatarUrl }) {
 `;
 
   return database.one(sqlQuery)
-    .then((group) => addSlug(group));
+    .then((group) => addSlug(group))
+    .then((group) => addIdenticon(group));
 }
 
 // Deletes group
