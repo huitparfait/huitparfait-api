@@ -13,6 +13,7 @@
   },
   "scripts": {
     "dev": "nodemon --watch src --watch config src/start-app.js",
+    "postinstall": "sequelize db:migrate && sequelize db:seed:all",
     "start": "node src/start-app.js",
     "e2e": "NODE_ENV=development jest -c ./e2e.jest.config.js --runInBand",
     "e2e:watch": "NODE_ENV=development jest -c ./e2e.jest.config.js  --runInBand --watch",
