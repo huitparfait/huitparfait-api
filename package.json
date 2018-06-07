@@ -13,6 +13,7 @@
   },
   "scripts": {
     "dev": "nodemon --watch src --watch config src/start-app.js",
+    "postinstall": "sequelize db:migrate && sequelize db:seed:all",
     "start": "node src/start-app.js",
     "e2e": "NODE_ENV=development jest -c ./e2e.jest.config.js --runInBand",
     "e2e:watch": "NODE_ENV=development jest -c ./e2e.jest.config.js  --runInBand --watch",
@@ -28,6 +29,7 @@
     "convict": "4.2.0",
     "hapi": "17.5.0",
     "hapi-auth-jwt2": "8.1.0",
+    "identicon.js": "2.3.2",
     "joi": "13.3.0",
     "pg": "7.4.3",
     "sequelize": "4.37.10",

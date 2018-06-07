@@ -133,7 +133,6 @@ module.exports = {
             },
             payload: Joi.object({
               isActive: Joi.boolean().required(),
-              isAdmin: Joi.boolean().required(),
             }).required(),
           },
         },
@@ -144,7 +143,6 @@ module.exports = {
               request.params.groupId,
               request.params.userId, {
                 isActive: request.payload.isActive,
-                isAdmin: request.payload.isAdmin,
               }
             )
             .catch(defaultErrorHandling(request));
