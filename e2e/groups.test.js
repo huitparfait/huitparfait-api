@@ -125,13 +125,11 @@ test('PUT /api/groups/{groupId}/users/{userId}', async () => {
     .get('/api/groups/92c34810-d09a-4d80-953f-6943270b4a14/users')
     .set('Authorization', `Bearer ${auth.getJohnsToken()}`);
   const paul = firstResponse.body.find((user) => user.name === 'Paul McCartney');
-  expect(paul.isAdmin).toEqual(false);
   expect(paul.isActive).toEqual(true);
 
   const secondResponse = await server
     .put('/api/groups/92c34810-d09a-4d80-953f-6943270b4a14/users/e32cf311-3bde-4b16-9c71-40a030cb0cf1')
     .send({
-      isAdmin: true,
       isActive: false,
     })
     .set('Authorization', `Bearer ${auth.getJohnsToken()}`);
@@ -141,7 +139,6 @@ test('PUT /api/groups/{groupId}/users/{userId}', async () => {
     .get('/api/groups/92c34810-d09a-4d80-953f-6943270b4a14/users')
     .set('Authorization', `Bearer ${auth.getJohnsToken()}`);
   const updatedPaul = thirdResponse.body.find((user) => user.name === 'Paul McCartney');
-  expect(updatedPaul.isAdmin).toEqual(true);
   expect(updatedPaul.isActive).toEqual(false);
 
   // Reset the DB to avoid weird results
