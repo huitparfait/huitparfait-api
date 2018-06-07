@@ -61,7 +61,7 @@ test('GET /api/users/me', async () => {
   expect(response.body).toEqual({
     id: '15c336ea-091b-425a-a99b-190179623ad4',
     name: 'John Lennon',
-    anonymousName: 'John L.',
+    anonymousName: 'Poulpe rassurant',
     avatarUrl: 'https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/JohnLennonpeace.jpg/330px-JohnLennonpeace.jpg',
     isAnonymous: true,
   });
@@ -81,7 +81,7 @@ test('PUT /api/users/me', async () => {
   expect(response.status).toEqual(200);
   expect(response.body.name).toEqual('Jon Lemon');
   // Anonymous name should be in two words or more
-  expect(response.body.anonymousName).toEqual('John L.');
+  expect(response.body.anonymousName).toEqual('Poulpe rassurant');
   expect(response.body.avatarUrl).toEqual('https://new.jons.avatar.location');
   expect(response.body.isAnonymous).toEqual(false);
 
