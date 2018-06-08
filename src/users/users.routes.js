@@ -69,6 +69,32 @@ module.exports = {
         },
       },
 
+      {
+        method: 'POST',
+        path: '/api/users/me/predictions',
+        config: {
+          validate: {
+            payload: {
+              gameId: Joi.string(),
+              predictionScoreTeamA: Joi.number().integer().min(0).required(),
+              predictionScoreTeamB: Joi.number().integer().min(0).required(),
+              predictionRiskAnswer: Joi.boolean(),
+              predictionRiskAmount: Joi.number().integer().min(0).max(3).required(),
+            },
+          },
+          handler (request) {
+            return userService.upsertPrediction({
+              userId: request.auth.credentials.sub,
+              gameId: request.payload.gameId,
+              predictionScoreTeamA: request.payload.predictionScoreTeamA,
+              predictionScoreTeamB: request.payload.predictionScoreTeamB,
+              predictionRiskAnswer: request.payload.predictionRiskAnswer != null ? request.payload.predictionRiskAnswer : null,
+              predictionRiskAmount: request.payload.predictionRiskAmount,
+            });
+          },
+        },
+      },
+
     ]);
   },
 };

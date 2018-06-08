@@ -106,9 +106,78 @@ function getUserGroups (userId) {
     .then((groups) => groups.map(addSlug).map(addIdenticon));
 }
 
+// Creates or updates a prediction for a user on a game
+function upsertPrediction ({ userId, gameId, predictionScoreTeamA, predictionScoreTeamB, predictionRiskAnswer, predictionRiskAmount }) {
+
+  const sqlQuery = sql`
+      WITH p AS (
+          INSERT INTO hp_prediction (risk_will_happen, risk_amount, user_id, game_id, risk_id)
+          VALUES (${predictionRiskAnswer}, ${predictionRiskAmount}, ${userId}, ${gameId}, (SELECT risk_id FROM hp_game WHERE id = ${gameId}))
+          ON CONFLICT (user_id, game_id)
+          DO UPDATE
+          SET
+              updated_at = now(),
+              risk_will_happen = ${predictionRiskAnswer},
+              risk_amount = ${predictionRiskAmount}
+          RETURNING
+              id,
+              game_id,
+              risk_will_happen,
+              risk_amount
+      ),
+      upa AS (
+          INSERT INTO hp_prediction_predicts_score_for_team (prediction_id, team_id, goal)
+          VALUES (
+              (SELECT id from p),
+              (SELECT team_id
+                  FROM hp_team_plays_in_game
+                  WHERE game_id = ${gameId}
+                  AND hp_team_plays_in_game.order = 1),
+              ${predictionScoreTeamA}
+          )
+          ON CONFLICT (prediction_id, team_id)
+          DO UPDATE
+          SET
+              updated_at = now(),
+              goal = ${predictionScoreTeamA}
+          RETURNING
+              goal
+      ),
+      upb AS (
+          INSERT INTO hp_prediction_predicts_score_for_team (prediction_id, team_id, goal)
+          VALUES (
+              (SELECT id from p),
+              (SELECT team_id
+                  FROM hp_team_plays_in_game
+                  WHERE game_id = ${gameId}
+                  AND hp_team_plays_in_game.order = 2),
+              ${predictionScoreTeamB}
+          )
+          ON CONFLICT (prediction_id, team_id)
+          DO UPDATE
+          SET
+              updated_at = now(),
+              goal = ${predictionScoreTeamA}
+          RETURNING
+              goal
+      )
+      SELECT
+          p.id,
+          p.game_id,
+          p.risk_will_happen AS prediction_risk_answer,
+          p.risk_amount AS prediction_risk_amount,
+          upa.goal AS prediction_score_team_a,
+          upb.goal AS prediction_score_team_b
+      FROM p, upa, upb
+  `;
+
+  return database.one(sqlQuery);
+}
+
 module.exports = {
   connectUser,
   getUser,
   updateUser,
   getUserGroups,
+  upsertPrediction,
 };
