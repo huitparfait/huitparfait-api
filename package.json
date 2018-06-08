@@ -32,6 +32,8 @@
     "hapi-auth-jwt2": "8.1.0",
     "identicon.js": "2.3.2",
     "joi": "13.3.0",
+    "lodash": "4.17.10",
+    "moment": "2.22.2",
     "pg": "7.4.3",
     "sequelize": "4.37.10",
     "sequelize-cli": "4.0.0",

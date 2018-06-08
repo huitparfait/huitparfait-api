@@ -95,6 +95,14 @@ module.exports = {
         },
       },
 
+      {
+        method: 'GET',
+        path: '/api/users/me/predictions/{period}',
+        handler (request) {
+          return userService.getPredictions(request.auth.credentials.sub, request.params.period);
+        },
+      },
+
     ]);
   },
 };
