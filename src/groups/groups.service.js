@@ -2,8 +2,8 @@
 
 const database = require('../database-pool');
 const sql = require('sql-tag');
-const { addSlug } = require('../utils/add-slug');
 const { addIdenticon } = require('../utils/add-identicon');
+const { addSlug } = require('../utils/add-slug');
 
 // Create a group (in which the user will be the first active and admin member)
 // Returns the created group

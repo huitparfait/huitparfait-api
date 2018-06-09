@@ -21,13 +21,13 @@ function camelCase (user) {
 }
 
 class DatabaseNotFoundError extends Error {
-  constructor(message) {
+  constructor (message) {
     super(`DatabaseNotFoundError: ${message}`);
   }
 }
 
 class DatabaseTooManyResultsError extends Error {
-  constructor(message) {
+  constructor (message) {
     super(`DatabaseTooManyResultsError: ${message}`);
   }
 }
