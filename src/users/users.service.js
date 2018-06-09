@@ -113,8 +113,8 @@ function upsertPrediction ({ userId, gameId, predictionScoreTeamA, predictionSco
 
   const sqlQuery = sql`
       WITH p AS (
-          INSERT INTO hp_prediction (risk_will_happen, risk_amount, user_id, game_id, risk_id)
-          VALUES (${predictionRiskAnswer}, ${predictionRiskAmount}, ${userId}, ${gameId}, (SELECT risk_id FROM hp_game WHERE id = ${gameId}))
+          INSERT INTO hp_prediction (risk_will_happen, risk_amount, user_id, game_id)
+          VALUES (${predictionRiskAnswer}, ${predictionRiskAmount}, ${userId}, ${gameId})
           ON CONFLICT (user_id, game_id)
           DO UPDATE
           SET
