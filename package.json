@@ -18,6 +18,7 @@
     "e2e": "NODE_ENV=development jest -c ./e2e.jest.config.js --runInBand",
     "e2e:watch": "NODE_ENV=development jest -c ./e2e.jest.config.js  --runInBand --watch",
     "db:migrate": "sequelize db:migrate",
+    "db:migrate:undo": "sequelize db:migrate:undo",
     "db:migrate:undo:all": "sequelize db:migrate:undo:all",
     "db:seed": "sequelize db:seed:all",
     "db:seed:undo:all": "sequelize db:seed:undo:all",
