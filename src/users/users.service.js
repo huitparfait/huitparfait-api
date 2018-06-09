@@ -159,7 +159,7 @@ function upsertPrediction ({ userId, gameId, predictionScoreTeamA, predictionSco
           DO UPDATE
           SET
               updated_at = now(),
-              goal = ${predictionScoreTeamA}
+              goal = ${predictionScoreTeamB}
           RETURNING
               goal
       )
