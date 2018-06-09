@@ -78,7 +78,7 @@ module.exports = {
               gameId: Joi.string().required(),
               predictionScoreTeamA: Joi.number().integer().min(0).required(),
               predictionScoreTeamB: Joi.number().integer().min(0).required(),
-              predictionRiskAnswer: Joi.boolean(),
+              predictionRiskAnswer: Joi.boolean().allow(null),
               predictionRiskAmount: Joi.number().integer().min(0).max(3).required(),
             },
           },

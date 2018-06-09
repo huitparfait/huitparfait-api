@@ -106,29 +106,58 @@ test('GET /api/users/me/groups', async () => {
   }]);
 });
 
-test('PUT /api/users/me/predictions', async () => {
+describe('POST /api/users/me/predictions', () => {
 
-  let response = await server
-    .post('/api/users/me/predictions')
-    .send({
-      gameId: 'ca1761fb-c319-48ec-bf2f-1e6066d43e25',
-      predictionScoreTeamA: 2,
-      predictionScoreTeamB: 1,
-      predictionRiskAnswer: true,
-      predictionRiskAmount: 3,
-    })
-    .set('Authorization', `Bearer ${await auth.getJohnsToken()}`);
+  test('Given a null risk', async () => {
 
-  expect(response.status).toEqual(200);
-  expect(response.body.gameId).toEqual('ca1761fb-c319-48ec-bf2f-1e6066d43e25');
-  expect(response.body.predictionScoreTeamA).toEqual(2);
-  expect(response.body.predictionScoreTeamB).toEqual(1);
-  expect(response.body.predictionRiskAnswer).toEqual(true);
-  expect(response.body.predictionRiskAmount).toEqual(3);
-  expect(response.body.id).toHaveLength(36);
+    const response = await server
+      .post('/api/users/me/predictions')
+      .send({
+        gameId: 'ca1761fb-c319-48ec-bf2f-1e6066d43e25',
+        predictionScoreTeamA: 2,
+        predictionScoreTeamB: 1,
+        predictionRiskAnswer: null,
+        predictionRiskAmount: 3,
+      })
+      .set('Authorization', `Bearer ${await auth.getJohnsToken()}`);
 
-  // Reset the DB to avoid weird results
-  await database.reset();
+    expect(response.status).toEqual(200);
+    expect(response.body.gameId).toEqual('ca1761fb-c319-48ec-bf2f-1e6066d43e25');
+    expect(response.body.predictionScoreTeamA).toEqual(2);
+    expect(response.body.predictionScoreTeamB).toEqual(1);
+    expect(response.body.predictionRiskAnswer).toEqual(null);
+    expect(response.body.predictionRiskAmount).toEqual(3);
+    expect(response.body.id).toHaveLength(36);
+
+    // Reset the DB to avoid weird results
+    await database.reset();
+  });
+
+  test('Given a risk not null', async () => {
+
+    const response = await server
+      .post('/api/users/me/predictions')
+      .send({
+        gameId: 'ca1761fb-c319-48ec-bf2f-1e6066d43e25',
+        predictionScoreTeamA: 2,
+        predictionScoreTeamB: 1,
+        predictionRiskAnswer: true,
+        predictionRiskAmount: 3,
+      })
+      .set('Authorization', `Bearer ${await auth.getJohnsToken()}`);
+
+    expect(response.status).toEqual(200);
+    expect(response.body.gameId).toEqual('ca1761fb-c319-48ec-bf2f-1e6066d43e25');
+    expect(response.body.predictionScoreTeamA).toEqual(2);
+    expect(response.body.predictionScoreTeamB).toEqual(1);
+    expect(response.body.predictionRiskAnswer).toEqual(true);
+    expect(response.body.predictionRiskAmount).toEqual(3);
+    expect(response.body.id).toHaveLength(36);
+
+    // Reset the DB to avoid weird results
+    await database.reset();
+  });
+
 });
 
 test('GET /api/users/me/predictions/{period}', async () => {
