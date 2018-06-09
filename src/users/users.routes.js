@@ -75,7 +75,7 @@ module.exports = {
         config: {
           validate: {
             payload: {
-              gameId: Joi.string(),
+              gameId: Joi.string().required(),
               predictionScoreTeamA: Joi.number().integer().min(0).required(),
               predictionScoreTeamB: Joi.number().integer().min(0).required(),
               predictionRiskAnswer: Joi.boolean(),
