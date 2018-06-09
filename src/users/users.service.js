@@ -218,7 +218,7 @@ function getPredictions (userId, period) {
       INNER JOIN hp_team AS tb
           ON tpgb.team_id = tb.id
       LEFT JOIN hp_prediction AS p
-          ON p.game_id = g.id
+          ON p.game_id = g.id AND p.user_id = ${userId}
       LEFT JOIN hp_prediction_predicts_score_for_team AS ppsta
           ON ppsta.prediction_id = p.id AND ppsta.team_id = ta.id
       LEFT JOIN hp_prediction_predicts_score_for_team AS ppstb
