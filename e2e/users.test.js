@@ -106,6 +106,77 @@ test('GET /api/users/me/groups', async () => {
   }]);
 });
 
+test('PUT /api/users/me/predictions', async () => {
+
+  let response = await server
+    .post('/api/users/me/predictions')
+    .send({
+      gameId: 'ca1761fb-c319-48ec-bf2f-1e6066d43e25',
+      predictionScoreTeamA: 2,
+      predictionScoreTeamB: 1,
+      predictionRiskAnswer: true,
+      predictionRiskAmount: 3,
+    })
+    .set('Authorization', `Bearer ${await auth.getJohnsToken()}`);
+
+  expect(response.status).toEqual(200);
+  expect(response.body.gameId).toEqual('ca1761fb-c319-48ec-bf2f-1e6066d43e25');
+  expect(response.body.predictionScoreTeamA).toEqual(2);
+  expect(response.body.predictionScoreTeamB).toEqual(1);
+  expect(response.body.predictionRiskAnswer).toEqual(true);
+  expect(response.body.predictionRiskAmount).toEqual(3);
+  expect(response.body.id).toHaveLength(36);
+
+  // Reset the DB to avoid weird results
+  await database.reset();
+});
+
+test('GET /api/users/me/predictions/{period}', async () => {
+
+  // Mock date: we're on January 1st, 2018 (1514761200)
+  jest.spyOn(Date, 'now').mockImplementation(() => 1514761200);
+
+  const response = await server
+    .get('/api/users/me/predictions/next-days')
+    .set('Authorization', `Bearer ${auth.getJohnsToken()}`);
+
+  expect(response.status).toEqual(200);
+  // Check that we have all needed information for one game
+  expect(response.body['Thu Jun 14 2018 00:00:00 GMT+0200']).toEqual([{
+    gameId: 'ca1761fb-c319-48ec-bf2f-1e6066d43e25',
+    phase: 'Groupes',
+    city: 'Moscou',
+    gameName: 'Match 1',
+    stadium: 'Luzhniki Stadium',
+    startsAt: '2018-06-14T15:00:00.000Z',
+    idTeamA: '0b4c559c-0acd-449c-92e4-149b2edc000c',
+    idTeamB: 'a01e1837-cd8e-4228-8927-387d78f8154d',
+    codeTeamB: 'sa',
+    nameTeamA: 'Russie',
+    codeTeamA: 'ru',
+    nameTeamB: 'Arabie Saoudite',
+    group: 'A',
+    goalsTeamA: null,
+    goalsTeamB: null,
+    penaltiesTeamB: null,
+    penaltiesTeamA: null,
+    riskId: '08705cff-e4a2-4d1a-8940-1cce00c2c2f4',
+    riskTitle: 'Risquette non déterminée',
+    predictionScoreTeamA: null,
+    predictionScoreTeamB: null,
+    predictionRiskAnswer: null,
+    predictionRiskAmount: 3,
+    classicPoints: null,
+    riskPoints: null,
+    riskHappened: null,
+  }]);
+  // 3 games on that day
+  expect(response.body['Fri Jun 15 2018 00:00:00 GMT+0200']).toHaveLength(3);
+
+  // Don't forget tu restore the real Data.now() function
+  Date.now.mockRestore();
+});
+
 beforeAll(async () => {
   const hapiServer = await createServer();
   server = request(hapiServer.listener);

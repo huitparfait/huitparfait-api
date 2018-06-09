@@ -17,6 +17,10 @@ module.exports = {
         game_id: foreignKey('hp_game', false),
         risk_id: foreignKey('hp_risk', false),
       }))
+      .then(() => queryInterface.addIndex('hp_prediction', {
+        fields: ['user_id', 'game_id'],
+        unique: true,
+      }))
       .then(() => queryInterface.createTable('hp_prediction_predicts_score_for_team', {
         prediction_id: foreignKey('hp_prediction'),
         team_id: foreignKey('hp_team'),
