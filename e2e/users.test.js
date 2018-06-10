@@ -2,6 +2,7 @@
 
 const auth = require('./utils/auth');
 const database = require('./utils/database');
+const moment = require('moment');
 const request = require('supertest');
 const { createServer } = require('../src/server');
 
@@ -158,6 +159,49 @@ describe('POST /api/users/me/predictions', () => {
     await database.reset();
   });
 
+  test('Given prediction after the beginning of a game', async () => {
+
+    const beforeGame = moment('2018-06-15T11:59:59.000Z').unix() * 1000;
+    const atGameKickOff = moment('2018-06-15T12:00:00.000Z').unix() * 1000;
+
+    // Mock date: one second before the beginning of game 2
+    jest.spyOn(Date, 'now').mockImplementation(() => beforeGame);
+
+    const acceptedResponse1 = await server
+      .post('/api/users/me/predictions')
+      .send({
+        gameId: '84b35ca0-264e-4c0d-b722-bde0f0a2114a',
+        predictionScoreTeamA: 2,
+        predictionScoreTeamB: 1,
+        predictionRiskAnswer: true,
+        predictionRiskAmount: 3,
+      })
+      .set('Authorization', `Bearer ${await auth.getJohnsToken()}`);
+
+    expect(acceptedResponse1.status).toEqual(200);
+
+    // Mock date: exact time of the beginning of game 2
+    jest.spyOn(Date, 'now').mockImplementation(() => atGameKickOff);
+
+    const deniedResponse = await server
+      .post('/api/users/me/predictions')
+      .send({
+        gameId: '84b35ca0-264e-4c0d-b722-bde0f0a2114a',
+        predictionScoreTeamA: 2,
+        predictionScoreTeamB: 1,
+        predictionRiskAnswer: true,
+        predictionRiskAmount: 3,
+      })
+      .set('Authorization', `Bearer ${await auth.getJohnsToken()}`);
+
+    expect(deniedResponse.status).toEqual(403);
+
+    // Don't forget to restore the real Data.now() function
+    Date.now.mockRestore();
+    // Reset the DB to avoid weird results
+    await database.reset();
+  });
+
 });
 
 test('GET /api/users/me/predictions/{period}', async () => {
@@ -202,7 +246,7 @@ test('GET /api/users/me/predictions/{period}', async () => {
   // 3 games on that day
   expect(response.body['Fri Jun 15 2018 00:00:00 GMT+0200']).toHaveLength(3);
 
-  // Don't forget tu restore the real Data.now() function
+  // Don't forget to restore the real Data.now() function
   Date.now.mockRestore();
 });
 

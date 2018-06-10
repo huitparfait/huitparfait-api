@@ -1,5 +1,7 @@
 'use strict';
 
+const Boom = require('boom');
+const GameAlreadyBegunError = require('../users/users.service').GameAlreadyBegunError;
 const Joi = require('joi');
 const userService = require('./users.service');
 
@@ -83,14 +85,21 @@ module.exports = {
             },
           },
           handler (request) {
-            return userService.upsertPrediction({
-              userId: request.auth.credentials.sub,
-              gameId: request.payload.gameId,
-              predictionScoreTeamA: request.payload.predictionScoreTeamA,
-              predictionScoreTeamB: request.payload.predictionScoreTeamB,
-              predictionRiskAnswer: request.payload.predictionRiskAnswer != null ? request.payload.predictionRiskAnswer : null,
-              predictionRiskAmount: request.payload.predictionRiskAmount,
-            });
+            return userService
+              .upsertPrediction({
+                userId: request.auth.credentials.sub,
+                gameId: request.payload.gameId,
+                predictionScoreTeamA: request.payload.predictionScoreTeamA,
+                predictionScoreTeamB: request.payload.predictionScoreTeamB,
+                predictionRiskAnswer: request.payload.predictionRiskAnswer != null ? request.payload.predictionRiskAnswer : null,
+                predictionRiskAmount: request.payload.predictionRiskAmount,
+              })
+              .catch((e) => {
+                if (e instanceof GameAlreadyBegunError) {
+                  return Boom.forbidden(e.message);
+                }
+                throw e;
+              });
           },
         },
       },
