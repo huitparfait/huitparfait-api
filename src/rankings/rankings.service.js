@@ -43,15 +43,21 @@ function calculateGroupRanking ({ userId, groupId, page, pageSize }) {
 function calculateGeneralRanking ({ userId, page, pageSize }) {
   const sqlQuery = sql`
       SELECT
-          id as user_id,
-          name AS user_name,
-          anonymous_name,
-          avatar_url,
-          is_anonymous
+          u.id as user_id,
+          u.name AS user_name,
+          u.anonymous_name,
+          u.avatar_url,
+          u.is_anonymous,
+          COALESCE(SUM(p.points_classic) + SUM(p.points_risk), 0) AS total_score,
+          SUM(CASE WHEN p IS NULL THEN 0 ELSE 1 END) as nb_predictions,
+          SUM(CASE WHEN p.points_classic + p.points_risk = 8 THEN 1 ELSE 0 END) as nb_perfects
       FROM
-          hp_user
+          hp_user AS u
+          LEFT JOIN hp_prediction AS p ON u.id = p.user_id
+      GROUP BY
+          u.id
       ORDER BY
-          created_at, name
+          total_score DESC, nb_perfects DESC, nb_predictions DESC, u.name
 `;
 
   return database.many(sqlQuery)

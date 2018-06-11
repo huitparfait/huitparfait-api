@@ -119,10 +119,13 @@ test('GET /api/rankings/general', async () => {
   expect(response.status).toEqual(200);
   expect(response.body).toHaveLength(5);
 
-  const george = response.body[0].user;
-  expect(george.name).toEqual('Corbeau éveillé');
-  const john = response.body[1].user;
-  expect(john.name).toEqual('John Lennon');
+  expect(response.body.map((userToRank) => userToRank.user.name)).toEqual([
+    'John Lennon',
+    'Hydre savante',
+    'Panthère extravertie',
+    'Pingouin paisible',
+    'Corbeau éveillé',
+  ]);
 });
 
 beforeAll(async () => {
