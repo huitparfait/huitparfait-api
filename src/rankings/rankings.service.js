@@ -13,18 +13,23 @@ function calculateGroupRanking ({ userId, groupId, page, pageSize }) {
           u.anonymous_name,
           u.avatar_url,
           u.is_anonymous,
-          ugb.created_at AS member_since
+          COALESCE(SUM(p.points_classic) + SUM(p.points_risk), 0) AS total_score,
+          SUM(CASE WHEN p IS NULL THEN 0 ELSE 1 END) as nb_predictions,
+          SUM(CASE WHEN p.points_classic + p.points_risk = 8 THEN 1 ELSE 0 END) as nb_perfects
       FROM
           hp_user_in_group AS uga
           INNER JOIN hp_user_in_group AS ugb ON uga.group_id = ugb.group_id
           INNER JOIN hp_user AS u ON ugb.user_id = u.id
+          LEFT JOIN hp_prediction AS p ON u.id = p.user_id
       WHERE
           uga.user_id = ${userId}
           AND uga.group_id = ${groupId}
           AND uga.is_active = true
           AND ugb.is_active = true
+      GROUP BY
+          u.id
       ORDER BY
-          member_since, name
+          total_score DESC, nb_perfects DESC, nb_predictions DESC, name
 `;
 
   return database.many(sqlQuery)
@@ -68,7 +73,11 @@ function formatUserWithStats (isGeneral, userId) {
 
     return {
       user: addIdenticon({ id: userToRank.userId, name, avatarUrl }),
-      stats: { totalScore: 0, nbPredictions: 0, nbPerfects: 0 },
+      stats: {
+        totalScore: userToRank.totalScore,
+        nbPredictions: userToRank.nbPredictions,
+        nbPerfects: userToRank.nbPerfects,
+      },
     };
   };
 }
