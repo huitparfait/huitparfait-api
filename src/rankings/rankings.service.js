@@ -2,14 +2,18 @@
 
 const _ = require('lodash');
 const database = require('../database-pool');
+const dateUtils = require('./date.utils');
 const sql = require('sql-tag');
 const { addIdenticon } = require('../utils/add-identicon');
 
 // Calculate the ranking for on group
 function calculateGroupRanking ({ userId, groupId, page, pageSize }) {
+
+  const eightLimit = dateUtils.getEightLimit(Date.now());
+
   const sqlQuery = sql`
       SELECT
-          u.id as user_id,
+          u.id AS user_id,
           u.name AS user_name,
           u.anonymous_name,
           u.avatar_url,
@@ -21,7 +25,9 @@ function calculateGroupRanking ({ userId, groupId, page, pageSize }) {
           hp_user_in_group AS uga
           INNER JOIN hp_user_in_group AS ugb ON uga.group_id = ugb.group_id
           INNER JOIN hp_user AS u ON ugb.user_id = u.id
-          LEFT JOIN hp_prediction AS p ON u.id = p.user_id
+          LEFT JOIN hp_prediction AS p1 ON u.id = p1.user_id
+          LEFT JOIN hp_game AS g ON g.id = p1.game_id AND (g.starts_at < ${new Date(eightLimit)})
+          LEFT JOIN hp_prediction AS p ON p.game_id = g.id AND u.id = p.user_id
       WHERE
           uga.user_id = ${userId}
           AND uga.group_id = ${groupId}
@@ -30,7 +36,7 @@ function calculateGroupRanking ({ userId, groupId, page, pageSize }) {
       GROUP BY
           u.id
       ORDER BY
-          total_score DESC, nb_perfects DESC, nb_predictions DESC, name
+          total_score DESC, nb_perfects DESC, nb_predictions DESC, u.name
 `;
 
   return database.many(sqlQuery)
@@ -42,9 +48,12 @@ function calculateGroupRanking ({ userId, groupId, page, pageSize }) {
 }
 
 function calculateGeneralRanking ({ userId, page, pageSize }) {
+
+  const eightLimit = dateUtils.getEightLimit(Date.now());
+
   const sqlQuery = sql`
       SELECT
-          u.id as user_id,
+          u.id AS user_id,
           u.name AS user_name,
           u.anonymous_name,
           u.avatar_url,
@@ -54,11 +63,13 @@ function calculateGeneralRanking ({ userId, page, pageSize }) {
           SUM(CASE WHEN p.points_classic + p.points_risk = 8 THEN 1 ELSE 0 END) as nb_perfects
       FROM
           hp_user AS u
-          LEFT JOIN hp_prediction AS p ON u.id = p.user_id
+          LEFT JOIN hp_prediction AS p1 ON u.id = p1.user_id
+          LEFT JOIN hp_game AS g ON g.id = p1.game_id AND (g.starts_at < ${new Date(eightLimit)})
+          LEFT JOIN hp_prediction AS p ON p.game_id = g.id AND u.id = p.user_id
       GROUP BY
           u.id
       ORDER BY
-          total_score DESC, nb_perfects DESC, nb_predictions DESC, u.name
+          total_score DESC, nb_perfects DESC, nb_predictions DESC, u.anonymous_name
 `;
 
   return database.many(sqlQuery)
