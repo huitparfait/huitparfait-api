@@ -78,7 +78,12 @@ function formatUserWithStats (isGeneral, userId) {
     const avatarUrl = shouldBeAnonymous ? null : userToRank.avatarUrl;
 
     return {
-      user: addIdenticon({ id: userToRank.userId, name, avatarUrl }),
+      user: addIdenticon({
+        id: userToRank.userId,
+        name,
+        avatarUrl,
+        anonymousName: userToRank.anonymousName,
+      }),
       stats: {
         totalScore: userToRank.totalScore,
         nbPredictions: userToRank.nbPredictions,
