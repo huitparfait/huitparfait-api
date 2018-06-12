@@ -21,6 +21,7 @@ describe('GET /api/rankings/{groupId}', () => {
           id: '15c336ea-091b-425a-a99b-190179623ad4',
           name: 'John Lennon',
           avatarUrl: expect.anything(),
+          anonymousName: 'Poulpe rassurant',
         },
         rank: 1,
         stats: {
@@ -34,6 +35,7 @@ describe('GET /api/rankings/{groupId}', () => {
           id: 'e32cf311-3bde-4b16-9c71-40a030cb0cf1',
           name: 'Paul McCartney',
           avatarUrl: expect.anything(),
+          anonymousName: 'Hydre savante',
         },
         rank: 1,
         stats: {
@@ -47,6 +49,7 @@ describe('GET /api/rankings/{groupId}', () => {
           id: '41c8ca0f-1933-4704-997a-8f42b3721f89',
           name: 'Ringo Starr',
           avatarUrl: expect.anything(),
+          anonymousName: 'Pingouin paisible',
         },
         rank: 3,
         stats: {
@@ -60,6 +63,7 @@ describe('GET /api/rankings/{groupId}', () => {
           id: '25e34902-c663-43a1-9dc3-9ab4c7e1c30d',
           name: 'George Harrison',
           avatarUrl: expect.anything(),
+          anonymousName: 'Corbeau éveillé',
         },
         rank: 4,
         stats: {
@@ -84,6 +88,7 @@ describe('GET /api/rankings/{groupId}', () => {
           id: '41c8ca0f-1933-4704-997a-8f42b3721f89',
           name: 'Ringo Starr',
           avatarUrl: expect.anything(),
+          anonymousName: 'Pingouin paisible',
         },
         rank: 3,
         stats: {
@@ -97,6 +102,7 @@ describe('GET /api/rankings/{groupId}', () => {
           id: '25e34902-c663-43a1-9dc3-9ab4c7e1c30d',
           name: 'George Harrison',
           avatarUrl: expect.anything(),
+          anonymousName: 'Corbeau éveillé',
         },
         rank: 4,
         stats: {
