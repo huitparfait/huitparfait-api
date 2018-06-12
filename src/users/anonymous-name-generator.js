@@ -175,7 +175,7 @@ const animals = [
 const adjectives = [
   { m: 'accueillant', f: 'accueillante' },
   { m: 'admirable', f: 'admirable' },
-  { m: 'adroit', f: 'adroit' },
+  { m: 'adroit', f: 'adroite' },
   { m: 'affectueux', f: 'affectueuse' },
   { m: 'agile', f: 'agile' },
   { m: 'agréable', f: 'agréable' },
