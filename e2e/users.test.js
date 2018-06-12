@@ -161,8 +161,8 @@ describe('POST /api/users/me/predictions', () => {
 
   test('Given prediction after the beginning of a game', async () => {
 
-    const beforeGame = moment('2018-06-15T11:59:59.000Z').unix() * 1000;
-    const atGameKickOff = moment('2018-06-15T12:00:00.000Z').unix() * 1000;
+    const beforeGame = moment('2018-06-15T11:59:59.000Z').valueOf();
+    const atGameKickOff = moment('2018-06-15T12:00:00.000Z').valueOf();
 
     // Mock date: one second before the beginning of game 2
     jest.spyOn(Date, 'now').mockImplementation(() => beforeGame);
