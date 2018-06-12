@@ -1,5 +1,6 @@
 'use strict';
 
+const _ = require('lodash');
 const database = require('../database-pool');
 const sql = require('sql-tag');
 const { addIdenticon } = require('../utils/add-identicon');
@@ -74,21 +75,17 @@ function formatUserWithStats (isGeneral, userId) {
     const isCurrentUser = userToRank.userId === userId;
     const shouldBeAnonymous = isGeneral && userToRank.isAnonymous && !isCurrentUser;
 
+    const id = userToRank.userId;
     const name = shouldBeAnonymous ? userToRank.anonymousName : userToRank.userName;
+    const anonymousName = shouldBeAnonymous ? null : userToRank.anonymousName;
     const avatarUrl = shouldBeAnonymous ? null : userToRank.avatarUrl;
 
+    const user = _.omitBy({ id, name, avatarUrl, anonymousName }, _.isNil);
+    const { totalScore, nbPredictions, nbPerfects } = userToRank;
+
     return {
-      user: addIdenticon({
-        id: userToRank.userId,
-        name,
-        avatarUrl,
-        anonymousName: userToRank.anonymousName,
-      }),
-      stats: {
-        totalScore: userToRank.totalScore,
-        nbPredictions: userToRank.nbPredictions,
-        nbPerfects: userToRank.nbPerfects,
-      },
+      user: addIdenticon(user),
+      stats: { totalScore, nbPredictions, nbPerfects },
     };
   };
 }
