@@ -109,10 +109,26 @@ function getUserGroups (userId) {
 }
 
 // Creates or updates a prediction for a user on a game
-function upsertPrediction ({ userId, gameId, predictionScoreTeamA, predictionScoreTeamB, predictionRiskAnswer, predictionRiskAmount }) {
+async function upsertPrediction ({ userId, gameId, predictionScoreTeamA, predictionScoreTeamB, predictionRiskAnswer, predictionRiskAmount }) {
 
-  const sqlQuery = sql`
-      WITH p AS (
+  const gameSqlQuery = sql`
+      SELECT starts_at
+      FROM hp_game
+      WHERE id = ${gameId}
+  `;
+
+  const game = await database.one(gameSqlQuery);
+  if (!moment().isBefore(game.startsAt)) {
+    throw new GameAlreadyBegunError(`Game ${gameId} has already begun`);
+  }
+
+  const upsertSqlQuery = sql`
+      WITH g as (
+          SELECT starts_at
+          FROM hp_game
+          WHERE id = ${gameId}
+      ),
+      p AS (
           INSERT INTO hp_prediction (risk_will_happen, risk_amount, user_id, game_id)
           VALUES (${predictionRiskAnswer}, ${predictionRiskAmount}, ${userId}, ${gameId})
           ON CONFLICT (user_id, game_id)
@@ -173,7 +189,7 @@ function upsertPrediction ({ userId, gameId, predictionScoreTeamA, predictionSco
       FROM p, upa, upb
   `;
 
-  return database.one(sqlQuery);
+  return database.one(upsertSqlQuery);
 }
 
 // Get games with information and predictions
@@ -281,6 +297,12 @@ function getPredictions (userId, period) {
     });
 }
 
+class GameAlreadyBegunError extends Error {
+  constructor (message) {
+    super(`GameAlreadyBegunError: ${message}`);
+  }
+}
+
 module.exports = {
   connectUser,
   getUser,
@@ -288,4 +310,5 @@ module.exports = {
   getUserGroups,
   upsertPrediction,
   getPredictions,
+  GameAlreadyBegunError,
 };
