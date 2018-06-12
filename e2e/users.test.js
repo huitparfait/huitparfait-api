@@ -235,12 +235,13 @@ test('GET /api/users/me/predictions/{period}', async () => {
     penaltiesTeamA: null,
     riskId: '0adaad33-7036-4ffc-8da7-a2b90a2030d0',
     riskTitle: 'Chaque équipe marque au moins un but',
-    predictionScoreTeamA: null,
-    predictionScoreTeamB: null,
-    predictionRiskAnswer: null,
+    predictionScoreTeamA: 3,
+    predictionScoreTeamB: 1,
+    predictionRiskAnswer: true,
     predictionRiskAmount: 3,
-    classicPoints: null,
-    riskPoints: null,
+    classicPoints: 5,
+    riskPoints: 3,
+    points: 8,
     riskHappened: null,
   }]);
   // 3 games on that day
