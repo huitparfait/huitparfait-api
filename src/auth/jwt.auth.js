@@ -21,6 +21,12 @@ module.exports = {
       verifyOptions: { algorithms: ['RS512'] },
     });
 
+    server.auth.strategy('jwt-admin', 'jwt', {
+      key: config.get('JWT_PUBLIC_KEY'),
+      validate: validateAdminToken,
+      verifyOptions: { algorithms: ['RS512'] },
+    });
+
     server.auth.default('jwt');
   },
 };
@@ -34,4 +40,8 @@ function validateToken (decoded) {
 
 function validateAnonymousToken () {
   return { isValid: true };
+};
+
+function validateAdminToken (decoded) {
+  return { isValid: decoded.isAdmin === true };
 };
