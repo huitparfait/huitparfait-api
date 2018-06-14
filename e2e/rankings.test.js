@@ -31,7 +31,7 @@ describe('GET /api/rankings/{groupId}', () => {
         rank: 1,
         stats: {
           totalScore: 16,
-          nbPredictions: 2,
+          nbPredictions: 3,
           nbPerfects: 2,
         },
       },
@@ -45,7 +45,7 @@ describe('GET /api/rankings/{groupId}', () => {
         rank: 1,
         stats: {
           totalScore: 16,
-          nbPredictions: 2,
+          nbPredictions: 3,
           nbPerfects: 2,
         },
       },
@@ -59,7 +59,7 @@ describe('GET /api/rankings/{groupId}', () => {
         rank: 3,
         stats: {
           totalScore: 0,
-          nbPredictions: 0,
+          nbPredictions: 1,
           nbPerfects: 0,
         },
       },
@@ -73,7 +73,7 @@ describe('GET /api/rankings/{groupId}', () => {
         rank: 4,
         stats: {
           totalScore: -6,
-          nbPredictions: 2,
+          nbPredictions: 3,
           nbPerfects: 0,
         },
       },

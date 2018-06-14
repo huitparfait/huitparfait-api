@@ -1,0 +1,1 @@
+../seeders/2018051900004-init-game.js

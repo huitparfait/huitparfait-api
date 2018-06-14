@@ -1,0 +1,1 @@
+../seeders/2018051900003-init-risk.js

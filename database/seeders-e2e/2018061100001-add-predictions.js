@@ -1,0 +1,1 @@
+../seeders/2018061100001-add-predictions.js

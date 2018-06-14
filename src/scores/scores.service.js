@@ -1,8 +1,6 @@
 'use strict';
 
-const _ = require('lodash');
 const database = require('../database-pool');
-const moment = require('moment');
 const sql = require('sql-tag');
 
 // Updates scores of a game

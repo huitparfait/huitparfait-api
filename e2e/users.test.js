@@ -235,8 +235,8 @@ test('GET /api/users/me/predictions/{period}', async () => {
     codeTeamA: 'ru',
     nameTeamB: 'Arabie Saoudite',
     group: 'A',
-    goalsTeamA: null,
-    goalsTeamB: null,
+    goalsTeamA: 3,
+    goalsTeamB: 1,
     penaltiesTeamB: null,
     penaltiesTeamA: null,
     riskId: '0adaad33-7036-4ffc-8da7-a2b90a2030d0',
@@ -248,7 +248,7 @@ test('GET /api/users/me/predictions/{period}', async () => {
     classicPoints: 5,
     riskPoints: 3,
     points: 8,
-    riskHappened: null,
+    riskHappened: true,
   }]);
   // 3 games on that day
   expect(response.body['Fri Jun 15 2018 00:00:00 GMT+0200']).toHaveLength(3);

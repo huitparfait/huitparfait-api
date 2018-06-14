@@ -5,7 +5,7 @@ const exec = require('child_process').exec;
 function reset () {
 
   return new Promise((resolve, reject) => {
-    exec('npm run db:reset:seed', null,
+    exec('npm run db:reset:seed:e2e', null,
       (err, stdout, stderr) => {
         err
           ? reject(err)
