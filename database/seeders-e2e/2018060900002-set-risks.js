@@ -1,0 +1,1 @@
+../seeders/2018060900002-set-risks.js

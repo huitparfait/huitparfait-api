@@ -2,7 +2,7 @@
 
 const _ = require('lodash');
 const database = require('../database-pool');
-const dateUtils = require('./date.utils');
+const dateUtils = require('../utils/date.utils');
 const sql = require('sql-tag');
 const { addIdenticon } = require('../utils/add-identicon');
 
@@ -36,7 +36,7 @@ function calculateGroupRanking ({ userId, groupId, page, pageSize }) {
       GROUP BY
           u.id
       ORDER BY
-          total_score DESC, nb_perfects DESC, nb_predictions DESC, u.name
+          total_score DESC, nb_perfects DESC, nb_predictions ASC, u.name
 `;
 
   return database.many(sqlQuery)
@@ -69,7 +69,7 @@ function calculateGeneralRanking ({ userId, page, pageSize }) {
       GROUP BY
           u.id
       ORDER BY
-          total_score DESC, nb_perfects DESC, nb_predictions DESC, u.anonymous_name
+          total_score DESC, nb_perfects DESC, nb_predictions ASC, u.anonymous_name
 `;
 
   return database.many(sqlQuery)

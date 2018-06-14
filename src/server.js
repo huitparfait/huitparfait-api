@@ -1,11 +1,12 @@
 'use strict';
 
 const config = require('./config/config');
-const groupRoutes = require('./groups/groups.routes');
 const Good = require('good');
+const groupRoutes = require('./groups/groups.routes');
 const Hapi = require('hapi');
 const homeRoutes = require('./home.routes');
 const jwtAuth = require('./auth/jwt.auth');
+const pointRoutes = require('./points/points.routes');
 const rankingRoutes = require('./rankings/rankings.routes');
 const scoreRoutes = require('./scores/scores.routes');
 const userRoutes = require('./users/users.routes');
@@ -21,6 +22,7 @@ async function createServer () {
     homeRoutes,
     userRoutes,
     groupRoutes,
+    pointRoutes,
     rankingRoutes,
     scoreRoutes,
     {
@@ -43,7 +45,7 @@ async function createServer () {
           ],
         },
       },
-    }
+    },
   ]);
 
   return server;

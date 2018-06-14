@@ -23,9 +23,12 @@
     "db:migrate:undo": "sequelize db:migrate:undo",
     "db:migrate:undo:all": "sequelize db:migrate:undo:all",
     "db:seed": "sequelize db:seed:all",
+    "db:seed:e2e": "sequelize db:seed:all --seeders-path=database/seeders-e2e",
     "db:seed:undo:all": "sequelize db:seed:undo:all",
+    "db:seed:undo:all:e2e": "sequelize db:seed:undo:all --seeders-path=database/seeders-e2e",
     "db:reset": "npm run db:seed:undo:all && npm run db:migrate:undo:all && npm run db:migrate && npm run db:seed",
     "db:reset:seed": "npm run db:seed:undo:all && npm run db:seed",
+    "db:reset:seed:e2e": "npm run db:seed:undo:all:e2e && npm run db:seed:e2e",
     "lint": "eslint .",
     "lint:fix": "eslint --fix ."
   },
