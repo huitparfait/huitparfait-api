@@ -7,6 +7,7 @@ const Hapi = require('hapi');
 const homeRoutes = require('./home.routes');
 const jwtAuth = require('./auth/jwt.auth');
 const rankingRoutes = require('./rankings/rankings.routes');
+const scoreRoutes = require('./scores/scores.routes');
 const userRoutes = require('./users/users.routes');
 
 async function createServer () {
@@ -21,6 +22,7 @@ async function createServer () {
     userRoutes,
     groupRoutes,
     rankingRoutes,
+    scoreRoutes,
     {
       plugin: Good,
       options: {

@@ -16,6 +16,13 @@ function getAnonymousToken () {
   return anonymousToken;
 }
 
+let adminToken;
+function getAdminToken () {
+  // Admin token (for score updates and other admin tasks)
+  adminToken = adminToken || sign({ isAdmin: true });
+  return adminToken;
+}
+
 let johnsToken;
 function getJohnsToken () {
   // Token for john Lennon (from the test data set)
@@ -32,6 +39,7 @@ function getMicksToken () {
 
 module.exports = {
   getAnonymousToken,
+  getAdminToken,
   getJohnsToken,
   getMicksToken,
 };

@@ -111,6 +111,9 @@ describe('POST /api/users/me/predictions', () => {
 
   test('Given a null risk', async () => {
 
+    const beforeGame = moment('2018-06-14T00:00:00.000Z').valueOf();
+    jest.spyOn(Date, 'now').mockImplementation(() => beforeGame);
+
     const response = await server
       .post('/api/users/me/predictions')
       .send({
@@ -130,11 +133,14 @@ describe('POST /api/users/me/predictions', () => {
     expect(response.body.predictionRiskAmount).toEqual(3);
     expect(response.body.id).toHaveLength(36);
 
-    // Reset the DB to avoid weird results
+    Date.now.mockRestore();
     await database.reset();
   });
 
   test('Given a risk not null', async () => {
+
+    const beforeGame = moment('2018-06-14T00:00:00.000Z').valueOf();
+    jest.spyOn(Date, 'now').mockImplementation(() => beforeGame);
 
     const response = await server
       .post('/api/users/me/predictions')
@@ -155,7 +161,7 @@ describe('POST /api/users/me/predictions', () => {
     expect(response.body.predictionRiskAmount).toEqual(3);
     expect(response.body.id).toHaveLength(36);
 
-    // Reset the DB to avoid weird results
+    Date.now.mockRestore();
     await database.reset();
   });
 
