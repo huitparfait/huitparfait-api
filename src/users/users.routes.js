@@ -12,6 +12,14 @@ module.exports = {
     server.route([
 
       {
+        method: 'GET',
+        path: '/api/users/count',
+        handler (request) {
+          return userService.getUserCount();
+        },
+      },
+
+      {
         method: 'POST',
         path: '/api/users/me',
         config: {
