@@ -32,6 +32,13 @@ function connectUser ({ name, oauthHash, avatarUrl }) {
   return database.one(sqlQuery);
 }
 
+function getUserCount () {
+
+  const sqlQuery = sql`SELECT count(*) FROM hp_user`;
+
+  return database.one(sqlQuery);
+}
+
 // Reads user details
 // Used when loading the application (and during login phase)
 function getUser (id) {
@@ -305,6 +312,7 @@ class GameAlreadyBegunError extends Error {
 
 module.exports = {
   connectUser,
+  getUserCount,
   getUser,
   updateUser,
   getUserGroups,

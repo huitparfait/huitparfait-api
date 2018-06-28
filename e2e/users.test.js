@@ -8,6 +8,16 @@ const { createServer } = require('../src/server');
 
 let server;
 
+test('GET /api/users/count', async () => {
+
+  const response = await server
+    .get('/api/users/count')
+    .set('Authorization', `Bearer ${auth.getJohnsToken()}`);
+
+  expect(response.status).toEqual(200);
+  expect(response.body).toEqual({ count: 5 });
+});
+
 test('POST /api/users/me', async () => {
 
   // Make a first call (creation after first login)
